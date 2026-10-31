@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="112" viewBox="0 0 960 112" role="img" aria-labelledby="title">
+<title id="title">Understand → Plan → Build → Test → Improve</title>
+<style>
+  svg { --ink: #000000; --paper: #FFFFFF; }
+  @media (prefers-color-scheme: dark) { svg { --ink: #FFFFFF; --paper: #000000; } }
+  text { font-family: 'JetBrains Mono', Consolas, 'Liberation Mono', monospace; fill: var(--ink); }
+  .headline { font-weight: 800; letter-spacing: 2px; }
+  [fill="#FFFFFF"] { fill: var(--ink); }
+  [stroke="#FFFFFF"] { stroke: var(--ink); }
+  .bit { animation: bit 4s steps(1, end) infinite; }
+  .solve { stroke-dasharray: 1; animation: solve 18s linear infinite; }
+  .still { display: none; }
+  @keyframes bit { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+  @keyframes solve { 0%, 8% { stroke-dashoffset: 1; } 88%, 100% { stroke-dashoffset: 0; } }
+  @media (prefers-reduced-motion: reduce) {
+    .bit, .solve { animation: none; }
+    .fx { display: none; }
+    .still { display: inline; }
+  }
+</style>
+<path d="M954 14V106H14" fill="none" stroke="#888888" stroke-width="4" shape-rendering="crispEdges"/>
+<rect x="8" y="8" width="940" height="92" fill="none" stroke="#FFFFFF" stroke-width="2" shape-rendering="crispEdges"/>
+<path d="M20 20h6m6 0h6m6 0h6" stroke="#FFFFFF" stroke-width="6" shape-rendering="crispEdges"/>
+<path d="M8 30H948" stroke="#888888"/>
+<text x="932" y="23" text-anchor="end" font-size="10" letter-spacing="1">HIROSAITO04 / PIXEL TERMINAL</text>
+
+
+<path d="M8 32V96" stroke="#888888"/>
+<text class="headline" x="20" y="57" font-size="25">01</text>
+<rect class="bit" x="155" y="40" width="14" height="14" fill="#FFFFFF" style="animation-delay:-0.0s"/>
+<text x="20" y="88" font-size="17">UNDERSTAND</text>
+<path d="M192 32V96" stroke="#888888"/>
+<text class="headline" x="212" y="57" font-size="25">02</text>
+<rect class="bit" x="347" y="40" width="14" height="14" fill="#FFFFFF" style="animation-delay:-0.8s"/>
+<text x="212" y="88" font-size="17">PLAN</text>
+<path d="M384 32V96" stroke="#888888"/>
+<text class="headline" x="404" y="57" font-size="25">03</text>
+<rect class="bit" x="539" y="40" width="14" height="14" fill="#FFFFFF" style="animation-delay:-1.6s"/>
+<text x="404" y="88" font-size="17">BUILD</text>
+<path d="M576 32V96" stroke="#888888"/>
+<text class="headline" x="596" y="57" font-size="25">04</text>
+<rect class="bit" x="731" y="40" width="14" height="14" fill="#FFFFFF" style="animation-delay:-2.4000000000000004s"/>
+<text x="596" y="88" font-size="17">TEST</text>
+<path d="M768 32V96" stroke="#888888"/>
+<text class="headline" x="788" y="57" font-size="25">05</text>
+<rect class="bit" x="923" y="40" width="14" height="14" fill="#FFFFFF" style="animation-delay:-3.2s"/>
+<text x="788" y="88" font-size="17">IMPROVE</text>
+</svg>
