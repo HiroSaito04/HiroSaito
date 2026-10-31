@@ -1,18 +1,11 @@
-# Credits and source notes
+# Credits
 
-This combined template uses source files the requester supplied:
+This customized package contains:
 
-- Pixel-terminal profile structure, illustrations, assets and SVG renderer:
-  **Ryo2702** (`Ryo2702-main.zip`, apparent GitHub profile `Ryo2702`).
-  README text and primary SVG identity were adapted for a new profile.
-- Contribution snake markup and GitHub Actions generation workflow only:
-  **Md Abu Kayser** (`md-abu-kayser-main.zip`). The workflow uses
-  [Platane/snk](https://github.com/Platane/snk) and
-  [crazy-max/ghaction-github-pages](https://github.com/crazy-max/ghaction-github-pages).
+- A fully redesigned README and SVG asset system prepared for the user profile repository `HiroSaito04`
+- GitHub contribution snake workflow based on the provided MD Abu contribution activity setup
+- New custom SVG visuals generated specifically for this profile package
 
-`reference/architecture-original.md` is retained from Ryo's supplied archive as
-an extra reference; it is not linked from the displayed GitHub profile and
-mentions external designs unrelated to the combined README.
-
-The source code, authored artwork and third-party character images may have
-rights restrictions. No new license is granted by this packaging.
+Notes:
+- The contribution snake appears only after the workflow in `.github/workflows/snake.yml` runs successfully.
+- The README displays on the GitHub profile only when the repository name matches the GitHub username.

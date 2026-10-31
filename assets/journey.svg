@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="360" viewBox="0 0 1200 360" fill="none">
+  <rect width="1200" height="360" rx="28" fill="#0B1020"/>
+  <rect x="26" y="26" width="1148" height="308" rx="26" fill="#0F1730" stroke="#22345C"/>
+  <text x="52" y="58" font-size="14" letter-spacing="2" fill="#8AA5D6" font-family="Segoe UI, Inter, Arial">WORKFLOW MAP</text>
+  <g>
+      <rect x="50" y="110" width="170" height="170" rx="22" fill="#101A35" stroke="#23375F"/>
+      <circle cx="92" cy="150" r="16" fill="#5eead4" fill-opacity="0.17" stroke="#5eead4"/>
+      <text x="92" y="155" text-anchor="middle" font-size="14" font-weight="700" fill="#EEF4FF" font-family="Segoe UI, Inter, Arial">1</text>
+      <text x="122" y="145" font-size="15" letter-spacing="1" fill="#8AA5D6" font-family="Segoe UI, Inter, Arial">STEP</text>
+      <text x="76" y="188" font-size="24" font-weight="600" fill="#EEF4FF" font-family="Segoe UI, Inter, Arial">DISCOVER</text>
+      <text x="76" y="238" font-size="14" fill="#CBD9F5" font-family="Segoe UI, Inter, Arial">Understand the goal and</text><text x="76" y="256" font-size="14" fill="#CBD9F5" font-family="Segoe UI, Inter, Arial">audience.</text>
+    </g>
+    <path d="M200 190 H 264" stroke="#355487" stroke-width="3" stroke-linecap="round" stroke-dasharray="10 10"/><g>
+      <rect x="270" y="110" width="170" height="170" rx="22" fill="#101A35" stroke="#23375F"/>
+      <circle cx="312" cy="150" r="16" fill="#60a5fa" fill-opacity="0.17" stroke="#60a5fa"/>
+      <text x="312" y="155" text-anchor="middle" font-size="14" font-weight="700" fill="#EEF4FF" font-family="Segoe UI, Inter, Arial">2</text>
+      <text x="342" y="145" font-size="15" letter-spacing="1" fill="#8AA5D6" font-family="Segoe UI, Inter, Arial">STEP</text>
+      <text x="296" y="188" font-size="24" font-weight="600" fill="#EEF4FF" font-family="Segoe UI, Inter, Arial">DESIGN</text>
+      <text x="296" y="238" font-size="14" fill="#CBD9F5" font-family="Segoe UI, Inter, Arial">Plan structure and visual</text><text x="296" y="256" font-size="14" fill="#CBD9F5" font-family="Segoe UI, Inter, Arial">direction.</text>
+    </g>
+    <path d="M420 190 H 484" stroke="#355487" stroke-width="3" stroke-linecap="round" stroke-dasharray="10 10"/><g>
+      <rect x="490" y="110" width="170" height="170" rx="22" fill="#101A35" stroke="#23375F"/>
+      <circle cx="532" cy="150" r="16" fill="#c084fc" fill-opacity="0.17" stroke="#c084fc"/>
+      <text x="532" y="155" text-anchor="middle" font-size="14" font-weight="700" fill="#EEF4FF" font-family="Segoe UI, Inter, Arial">3</text>
+      <text x="562" y="145" font-size="15" letter-spacing="1" fill="#8AA5D6" font-family="Segoe UI, Inter, Arial">STEP</text>
+      <text x="516" y="188" font-size="24" font-weight="600" fill="#EEF4FF" font-family="Segoe UI, Inter, Arial">BUILD</text>
+      <text x="516" y="238" font-size="14" fill="#CBD9F5" font-family="Segoe UI, Inter, Arial">Develop practical,</text><text x="516" y="256" font-size="14" fill="#CBD9F5" font-family="Segoe UI, Inter, Arial">responsive solutions.</text>
+    </g>
+    <path d="M640 190 H 704" stroke="#355487" stroke-width="3" stroke-linecap="round" stroke-dasharray="10 10"/><g>
+      <rect x="710" y="110" width="170" height="170" rx="22" fill="#101A35" stroke="#23375F"/>
+      <circle cx="752" cy="150" r="16" fill="#34D399" fill-opacity="0.17" stroke="#34D399"/>
+      <text x="752" y="155" text-anchor="middle" font-size="14" font-weight="700" fill="#EEF4FF" font-family="Segoe UI, Inter, Arial">4</text>
+      <text x="782" y="145" font-size="15" letter-spacing="1" fill="#8AA5D6" font-family="Segoe UI, Inter, Arial">STEP</text>
+      <text x="736" y="188" font-size="24" font-weight="600" fill="#EEF4FF" font-family="Segoe UI, Inter, Arial">REFINE</text>
+      <text x="736" y="238" font-size="14" fill="#CBD9F5" font-family="Segoe UI, Inter, Arial">Test, improve, and polish</text><text x="736" y="256" font-size="14" fill="#CBD9F5" font-family="Segoe UI, Inter, Arial">details.</text>
+    </g>
+    <path d="M860 190 H 924" stroke="#355487" stroke-width="3" stroke-linecap="round" stroke-dasharray="10 10"/><g>
+      <rect x="930" y="110" width="170" height="170" rx="22" fill="#101A35" stroke="#23375F"/>
+      <circle cx="972" cy="150" r="16" fill="#f59e0b" fill-opacity="0.17" stroke="#f59e0b"/>
+      <text x="972" y="155" text-anchor="middle" font-size="14" font-weight="700" fill="#EEF4FF" font-family="Segoe UI, Inter, Arial">5</text>
+      <text x="1002" y="145" font-size="15" letter-spacing="1" fill="#8AA5D6" font-family="Segoe UI, Inter, Arial">STEP</text>
+      <text x="956" y="188" font-size="24" font-weight="600" fill="#EEF4FF" font-family="Segoe UI, Inter, Arial">SHIP</text>
+      <text x="956" y="238" font-size="14" fill="#CBD9F5" font-family="Segoe UI, Inter, Arial">Deliver work that feels</text><text x="956" y="256" font-size="14" fill="#CBD9F5" font-family="Segoe UI, Inter, Arial">clear and useful.</text>
+    </g>
+    
+</svg>

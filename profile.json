@@ -1,9 +1,28 @@
 {
-  "handle": "HiroSaito04",
-  "name_line_1": "MIKE",
-  "name_line_2": "DEVELOPER & CREATOR",
-  "role": "IT / MULTIMEDIA ARTS",
-  "tagline": "Responsive apps. Clear design. Creative work.",
-  "footer": "DEVELOPMENT / DESIGN / 2026",
-  "location": "PHILIPPINES"
+  "username": "HiroSaito04",
+  "display_name": "MIKE",
+  "headline": "BSIT • Multimedia Arts",
+  "subheadline": "Web Developer • UI/UX Enthusiast • Multimedia Creator",
+  "tagline": "Building responsive applications, cleaner interfaces, and creative digital work.",
+  "location": "Philippines",
+  "status": "Actively learning and building projects",
+  "focus": [
+    "Web Development",
+    "UI / Visual Design",
+    "Multimedia Production"
+  ],
+  "stack": {
+    "frontend": ["React", "JavaScript", "HTML", "CSS"],
+    "backend": ["Node.js", "Express"],
+    "database": ["MongoDB"],
+    "design_media": ["Figma", "Photoshop", "Illustrator", "Premiere Pro"],
+    "tools": ["Git", "GitHub", "Canva", "CapCut"]
+  },
+  "workflow": [
+    "Understand the goal and audience.",
+    "Plan structure and visual direction.",
+    "Develop practical, responsive solutions.",
+    "Test, improve, and polish details.",
+    "Deliver work that feels clear and useful."
+  ]
 }

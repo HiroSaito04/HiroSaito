@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520" fill="none">
+  <defs>
+    <linearGradient id="bggrad" x1="0" y1="0" x2="1200" y2="520" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0B1020"/>
+      <stop offset="0.55" stop-color="#111936"/>
+      <stop offset="1" stop-color="#0D1430"/>
+    </linearGradient>
+    <linearGradient id="accentLine" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#5EEAD4"/>
+      <stop offset="0.5" stop-color="#60A5FA"/>
+      <stop offset="1" stop-color="#C084FC"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#152347" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#0D1733" stop-opacity="0.82"/>
+    </linearGradient>
+    <filter id="blurGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="30" result="blur"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="520" rx="28" fill="url(#bggrad)"/>
+  <circle cx="960" cy="115" r="110" fill="#60A5FA" fill-opacity="0.16" filter="url(#blurGlow)"/>
+  <circle cx="1080" cy="320" r="95" fill="#C084FC" fill-opacity="0.13" filter="url(#blurGlow)"/>
+  <circle cx="760" cy="420" r="120" fill="#5EEAD4" fill-opacity="0.11" filter="url(#blurGlow)"/>
+
+  <g opacity="0.35">
+    <path d="M0 120H1200" stroke="#203157"/>
+    <path d="M0 200H1200" stroke="#203157"/>
+    <path d="M0 280H1200" stroke="#203157"/>
+    <path d="M0 360H1200" stroke="#203157"/>
+    <path d="M0 440H1200" stroke="#203157"/>
+    <path d="M160 0V520" stroke="#203157"/>
+    <path d="M320 0V520" stroke="#203157"/>
+    <path d="M480 0V520" stroke="#203157"/>
+    <path d="M640 0V520" stroke="#203157"/>
+    <path d="M800 0V520" stroke="#203157"/>
+    <path d="M960 0V520" stroke="#203157"/>
+    <path d="M1120 0V520" stroke="#203157"/>
+  </g>
+
+  <rect x="50" y="50" width="650" height="420" rx="30" fill="url(#glass)" stroke="#27406F"/>
+  <text x="72" y="90" font-size="14" letter-spacing="2" fill="#8AA5D6" font-family="Segoe UI, Inter, Arial">PROFILE OVERVIEW</text>
+  <text x="72" y="168" font-size="62" font-weight="700" fill="#EEF4FF" font-family="Segoe UI, Inter, Arial">MIKE</text>
+  <text x="72" y="204" font-size="24" fill="#5EEAD4" font-family="Segoe UI, Inter, Arial">@HiroSaito04</text>
+  <text x="72" y="260" font-size="30" font-weight="600" fill="#DCE8FF" font-family="Segoe UI, Inter, Arial">BSIT • Multimedia Arts</text>
+  <text x="72" y="300" font-size="22" fill="#A7B6D6" font-family="Segoe UI, Inter, Arial">Web Developer • UI/UX Enthusiast • Multimedia Creator</text>
+  <text x="72" y="332" font-size="19" fill="#CCD8F4" font-family="Segoe UI, Inter, Arial">Building responsive applications, cleaner interfaces, and creative digital work.</text>
+  <g transform="translate(70,360)">
+      <rect rx="18" ry="18" width="120" height="36" fill="#102246" stroke="#27406f" stroke-width="1"/>
+      <text x="60.0" y="24" text-anchor="middle" font-size="16" fill="#dfe9ff" font-family="Segoe UI, Inter, Arial">WEB APPS</text>
+    </g><g transform="translate(204,360)">
+      <rect rx="18" ry="18" width="120" height="36" fill="#102246" stroke="#27406f" stroke-width="1"/>
+      <text x="60.0" y="24" text-anchor="middle" font-size="16" fill="#dfe9ff" font-family="Segoe UI, Inter, Arial">UI / UX</text>
+    </g><g transform="translate(338,360)">
+      <rect rx="18" ry="18" width="120" height="36" fill="#102246" stroke="#27406f" stroke-width="1"/>
+      <text x="60.0" y="24" text-anchor="middle" font-size="16" fill="#dfe9ff" font-family="Segoe UI, Inter, Arial">MULTIMEDIA</text>
+    </g><g transform="translate(472,360)">
+      <rect rx="18" ry="18" width="139" height="36" fill="#102246" stroke="#27406f" stroke-width="1"/>
+      <text x="69.3" y="24" text-anchor="middle" font-size="16" fill="#dfe9ff" font-family="Segoe UI, Inter, Arial">CREATIVE TECH</text>
+    </g>
+  <text x="72" y="428" font-size="16" letter-spacing="1" fill="#9EB2DA" font-family="Segoe UI, Inter, Arial">STATUS  //  Actively learning and building projects</text>
+  <text x="72" y="455" font-size="16" letter-spacing="1" fill="#9EB2DA" font-family="Segoe UI, Inter, Arial">LOCATION //  Philippines</text>
+
+  <g transform="translate(750,58)">
+    <rect width="398" height="404" rx="28" fill="#0E1835" stroke="#27406F"/>
+    <text x="28" y="42" font-size="14" letter-spacing="2" fill="#8AA5D6" font-family="Segoe UI, Inter, Arial">FOCUS AREAS</text>
+    <rect x="26" y="70" width="346" height="88" rx="22" fill="#122348" stroke="#24406E"/>
+    <rect x="26" y="176" width="346" height="88" rx="22" fill="#10213F" stroke="#24406E"/>
+    <rect x="26" y="282" width="346" height="88" rx="22" fill="#0F1C39" stroke="#24406E"/>
+
+    <circle cx="68" cy="114" r="18" fill="#5EEAD4" fill-opacity="0.18" stroke="#5EEAD4"/>
+    <circle cx="68" cy="220" r="18" fill="#60A5FA" fill-opacity="0.18" stroke="#60A5FA"/>
+    <circle cx="68" cy="326" r="18" fill="#C084FC" fill-opacity="0.18" stroke="#C084FC"/>
+
+    <text x="100" y="108" font-size="14" letter-spacing="1" fill="#86A4D5" font-family="Segoe UI, Inter, Arial">01</text>
+    <text x="100" y="130" font-size="24" font-weight="600" fill="#EEF4FF" font-family="Segoe UI, Inter, Arial">Web Development</text>
+    <text x="100" y="151" font-size="15" fill="#B8C8E8" font-family="Segoe UI, Inter, Arial">Building practical and responsive user experiences.</text>
+
+    <text x="100" y="214" font-size="14" letter-spacing="1" fill="#86A4D5" font-family="Segoe UI, Inter, Arial">02</text>
+    <text x="100" y="236" font-size="24" font-weight="600" fill="#EEF4FF" font-family="Segoe UI, Inter, Arial">UI / Visual Design</text>
+    <text x="100" y="257" font-size="15" fill="#B8C8E8" font-family="Segoe UI, Inter, Arial">Designing clean layouts, interfaces, and visuals.</text>
+
+    <text x="100" y="320" font-size="14" letter-spacing="1" fill="#86A4D5" font-family="Segoe UI, Inter, Arial">03</text>
+    <text x="100" y="342" font-size="24" font-weight="600" fill="#EEF4FF" font-family="Segoe UI, Inter, Arial">Multimedia Production</text>
+    <text x="100" y="363" font-size="15" fill="#B8C8E8" font-family="Segoe UI, Inter, Arial">Producing digital content and creative assets.</text>
+  </g>
+</svg>

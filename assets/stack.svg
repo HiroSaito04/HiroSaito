@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" fill="none">
+  <rect width="1200" height="560" rx="28" fill="#0B1020"/>
+  <rect x="26" y="26" width="1148" height="508" rx="26" fill="#0F1730" stroke="#22345C"/>
+  <text x="52" y="58" font-size="14" letter-spacing="2" fill="#8AA5D6" font-family="Segoe UI, Inter, Arial">TOOLKIT SNAPSHOT</text>
+  <g transform="translate(50,62)">
+      <rect width="1100" height="74" rx="20" fill="#101A35" stroke="#23375F"/>
+      <rect x="20" y="18" width="180" height="38" rx="14" fill="#5eead4" fill-opacity="0.14" stroke="#5eead4"/>
+      <text x="110" y="43" text-anchor="middle" font-size="18" font-weight="600" fill="#EEF4FF" font-family="Segoe UI, Inter, Arial">FRONTEND</text>
+      <text x="230" y="44" font-size="20" fill="#CBD9F5" font-family="Segoe UI, Inter, Arial">React  •  JavaScript  •  HTML  •  CSS</text>
+    </g><g transform="translate(50,156)">
+      <rect width="1100" height="74" rx="20" fill="#101A35" stroke="#23375F"/>
+      <rect x="20" y="18" width="180" height="38" rx="14" fill="#60a5fa" fill-opacity="0.14" stroke="#60a5fa"/>
+      <text x="110" y="43" text-anchor="middle" font-size="18" font-weight="600" fill="#EEF4FF" font-family="Segoe UI, Inter, Arial">BACKEND</text>
+      <text x="230" y="44" font-size="20" fill="#CBD9F5" font-family="Segoe UI, Inter, Arial">Node.js  •  Express</text>
+    </g><g transform="translate(50,250)">
+      <rect width="1100" height="74" rx="20" fill="#101A35" stroke="#23375F"/>
+      <rect x="20" y="18" width="180" height="38" rx="14" fill="#c084fc" fill-opacity="0.14" stroke="#c084fc"/>
+      <text x="110" y="43" text-anchor="middle" font-size="18" font-weight="600" fill="#EEF4FF" font-family="Segoe UI, Inter, Arial">DATABASE</text>
+      <text x="230" y="44" font-size="20" fill="#CBD9F5" font-family="Segoe UI, Inter, Arial">MongoDB</text>
+    </g><g transform="translate(50,344)">
+      <rect width="1100" height="74" rx="20" fill="#101A35" stroke="#23375F"/>
+      <rect x="20" y="18" width="180" height="38" rx="14" fill="#f59e0b" fill-opacity="0.14" stroke="#f59e0b"/>
+      <text x="110" y="43" text-anchor="middle" font-size="18" font-weight="600" fill="#EEF4FF" font-family="Segoe UI, Inter, Arial">DESIGN / MEDIA</text>
+      <text x="230" y="44" font-size="20" fill="#CBD9F5" font-family="Segoe UI, Inter, Arial">Figma  •  Photoshop  •  Illustrator  •  Premiere Pro</text>
+    </g><g transform="translate(50,438)">
+      <rect width="1100" height="74" rx="20" fill="#101A35" stroke="#23375F"/>
+      <rect x="20" y="18" width="180" height="38" rx="14" fill="#34D399" fill-opacity="0.14" stroke="#34D399"/>
+      <text x="110" y="43" text-anchor="middle" font-size="18" font-weight="600" fill="#EEF4FF" font-family="Segoe UI, Inter, Arial">TOOLS</text>
+      <text x="230" y="44" font-size="20" fill="#CBD9F5" font-family="Segoe UI, Inter, Arial">Git  •  GitHub  •  Canva  •  CapCut</text>
+    </g>
+</svg>
