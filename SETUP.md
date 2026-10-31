@@ -1,41 +1,68 @@
-# EDITABLE PIXEL PROFILE CARD — REVIEW PROJECT
+# Pixel Pathfinder — Review & Setup
 
-**No GitHub actions have been taken. Do not delete your existing `.git` folder or force-push.** This is a separate preview copy so your recovered commit history stays intact.
+## Review FIRST — no Git commands needed
 
-## Easiest: live editor (no installation or server)
+1. Extract the ZIP into a NEW folder, such as `D:\HiroSaito04-MapStudio-REVIEW`.
+2. Double-click **`preview.html`** to see the updated profile, map, and contribution preview.
+3. Open **`editor.html`** to change text, accent color, and avatar in the **code-generated SVG** profile card. Export SVG for GitHub.
+4. No upload or push has been done.
 
-1. Unzip this package into a **separate folder** (`HiroSaito04-editable-review`).
-2. Double-click `editor.html`, or right-click it and choose **Open With → Chrome/Edge**.
-3. Change **GitHub username, display name, role, tagline, GitHub caption, accent color**. All update live.
-4. Click **Choose File** to replace the avatar with a new transparent PNG/JPG/WebP. The border/frame stays the same.
-5. Click **EXPORT SVG FOR GITHUB**. Your downloaded `profile-card.svg` contains the pixel typography, border, background and embedded portrait.
-6. If you like the result, put the exported file in your existing repository as `assets/profile-card.svg` (replacing the old file). The README already references that filename.
-7. For later edits, reopen `editor.html`, click **REOPEN EXPORTED SVG**, and choose your last exported `profile-card.svg`. Both the text and your embedded portrait return to the editor. You can swap the portrait again and export a new version.
-8. Optional: click **SAVE CONFIG JSON** to save the editable text values separately. Use **IMPORT CONFIG** to restore them.
+## Edit the village MAP visually in Tiled
 
-**No `npm install`, Python server, or web access is needed for the browser editor.**
+Tiled is a tile-map editor, not a terminal emulator. Download it at https://www.mapeditor.org/ .
 
-## Alternative: edit source files in VS Code and rebuild
-
-1. Edit `profile.json` (all text fields and theme color).
-2. Replace `assets/boy_down.png` with the portrait of your choice, or adjust `"avatar"` in `profile.json` to any PNG/JPG/WebP file within the project.
-3. In the project directory run:
+1. Open `maps/village.tmx` in the **Tiled** desktop application.
+2. Select an existing *tile layer* to repaint grass, roads, water, or other terrain. Use the tilesets panel; they are included in this project with valid relative image paths.
+3. Add, move, and delete buildings and props in the existing object layers.
+4. In **Layers**, show/select **`Player Route [edit polyline]`**. The object **`Player Walk Path`** is a multi-point polyline. Use Tiled's *Edit Polygons* tool to move, insert, or delete path points. The avatar follows this polyline; its route is not hardcoded in Python.
+5. Save with **Ctrl+S**.
+6. Open terminal in project root and run:
 
 ```powershell
-node scripts/build-card.js
+python -m pip install -r requirements.txt
+python scripts/render_map.py
 ```
 
-Node.js is the only requirement for this method. The script regenerates `assets/profile-card.svg` and refreshes the editor's default configuration. No external fonts, images or packages are downloaded.
+Your edited route and tiles now appear in `assets/pathfinder.gif`. Open `preview.html` and refresh. Use `assets/village-map-full.png` to inspect the full tilemap.
 
-## How the design works
+**Technical note:** This is based on the user's actual `village.tmx` with CSV tile layers and Tiled objects; the missing tileset image references from the supplied ZIP were repaired. Keep `maps/`, `tiles/`, and `tiles&objects/` together. The sprite and route use the same TMX coordinates.
 
-- `scripts/card-renderer.js` is the complete **code-based design**. Every shape and every letter of the pixel font is authored as SVG geometry. You can edit the colors, layout, corner shapes, font, forest and frame there.
-- `profile.json` holds editable text and image path.
-- `assets/boy_down.png` is the default portrait. Keep transparency for best results.
-- `assets/profile-card.svg` is the finished card to display on GitHub.
-- `editor.html` is the local visual editor and SVG/PNG/config exporter. This is **not** embedded in your GitHub README; GitHub does not run interactive editor scripts inside a README.
-- `assets/pathfinder.gif` and `assets/contribution-brio.gif` are retained unchanged; Pathfinder uses Player and Contribution uses Brio.
+## Brio over the REAL GitHub contribution calendar
 
-## Preview only
+The local ZIP includes a **clearly labeled sample visualization** so you can judge its styling without pretending sample levels are your real history. Brio moves through the actual GitHub-shaped 53-week calendar, not a made-up 6-row green game board.
 
-Open `README.md` in VS Code and press **Ctrl+Shift+V** to check the profile preview. No Git commands are necessary to inspect it. Later, when you approve the update, copy the files into your already cloned repo with its original `.git` folder still present and create a **normal commit/push**.
+To download your public GitHub contribution levels and regenerate locally (internet required):
+
+```powershell
+python scripts/render_contributions.py --fetch
+```
+
+When published to GitHub, `.github/workflows/update-contributions.yml` can update the GIF and cached levels once daily after you manually run it the first time under **Actions**. GitHub Actions may need read/write workflow permissions. Failed fetches do **not** overwrite saved real data.
+
+For a sample-only redraw:
+
+```powershell
+python scripts/render_contributions.py --preview
+```
+
+## Editable card
+
+- `editor.html`: offline browser editor (text, palette, portrait, export SVG)
+- `profile.json`: editable text / palette / image path
+- `scripts/card-renderer.js`: code for all pixel typography and vector card art
+- `node scripts/build-card.js`: rebuild `assets/profile-card.svg` after changing `profile.json`
+
+## Protect your Git history
+
+This ZIP deliberately **does not contain a `.git` directory**. When you approve the design, copy the changed files into your EXISTING `D:\HiroSaito04` repo folder and use an ordinary commit and push. **Do not run `git init` again and do not force-push.**
+
+
+## Editable star collectibles
+
+Open `maps/village.tmx` in Tiled and use the object layer named `Collectible Stars [edit positions]`.
+Move, delete, or duplicate the star objects to control where the player collects stars during the Pathfinder animation.
+Then rerun:
+
+```bash
+python scripts/render_map.py
+```
