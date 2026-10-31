@@ -1,48 +1,12 @@
-# Setup Guide for `HiroSaito04`
+# VS Code update instructions
 
-This repository is your **GitHub profile repository**, so the repository name must be exactly:
-
-`HiroSaito04`
-
-and it must be **Public**.
-
-## If you already pushed the previous version
-
-Since your repository is already working, you only need to replace the files with this updated concept and push again.
-
-## Steps in VS Code
-
-Open the project folder in VS Code and use the terminal:
+Extract the ZIP. Copy the **contents** of the extracted `HiroSaito04-pixel` folder into your existing local `HiroSaito04` repository, including the hidden `.github` folder. Replace old files and remove unused old assets. Then open the repository folder in VS Code and run:
 
 ```bash
 git status
-```
-
-If you copied the updated files into the same project folder, commit and push them:
-
-```bash
-git add .
-git commit -m "Redesign profile concept and assets"
+git add -A
+git commit -m "Redesign profile with pixel styling"
 git push origin main
 ```
 
-## If the snake is not yet updating
-
-Go to:
-
-`Actions` → `Generate Snake Animation` → `Run workflow`
-
-After it finishes, refresh your GitHub profile.
-
-## Editable files
-
-- `README.md` → main content of your profile
-- `profile.json` → text used for the generated SVG assets
-- `assets/*.svg` → generated visuals
-- `scripts/build_assets.py` → regenerates the SVG assets if you change `profile.json`
-
-## Regenerate assets after editing profile.json
-
-```bash
-python scripts/build_assets.py
-```
+Your public GitHub profile repository must remain named `HiroSaito04`. The snake workflow is preserved. If needed, rerun it under Actions → Generate Snake Animation → Run workflow.

@@ -1,28 +1,11 @@
 {
   "username": "HiroSaito04",
-  "display_name": "MIKE",
-  "headline": "BSIT • Multimedia Arts",
-  "subheadline": "Web Developer • UI/UX Enthusiast • Multimedia Creator",
-  "tagline": "Building responsive applications, cleaner interfaces, and creative digital work.",
-  "location": "Philippines",
-  "status": "Actively learning and building projects",
-  "focus": [
-    "Web Development",
-    "UI / Visual Design",
-    "Multimedia Production"
-  ],
-  "stack": {
-    "frontend": ["React", "JavaScript", "HTML", "CSS"],
-    "backend": ["Node.js", "Express"],
-    "database": ["MongoDB"],
-    "design_media": ["Figma", "Photoshop", "Illustrator", "Premiere Pro"],
-    "tools": ["Git", "GitHub", "Canva", "CapCut"]
-  },
-  "workflow": [
-    "Understand the goal and audience.",
-    "Plan structure and visual direction.",
-    "Develop practical, responsive solutions.",
-    "Test, improve, and polish details.",
-    "Deliver work that feels clear and useful."
+  "name": "Mike Angelo A. Rubia",
+  "portfolio": "https://mr-zhiroark-portfolio.vercel.app",
+  "theme": "pixel RPG",
+  "palette": [
+    "#81A6C6",
+    "#AACDDC",
+    "#F3E3D0"
   ]
 }
