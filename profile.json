@@ -1,11 +1,9 @@
 {
-  "username": "HiroSaito04",
+  "source": "https://mr-zhiroark-portfolio.vercel.app",
+  "source_note": "Only identity and role verified from the site's publicly readable page title. Other biography, skills, projects, or contact details are intentionally not guessed.",
   "name": "Mike Angelo A. Rubia",
+  "role": "Full Stack Developer",
+  "username": "HiroSaito04",
   "portfolio": "https://mr-zhiroark-portfolio.vercel.app",
-  "theme": "pixel RPG",
-  "palette": [
-    "#81A6C6",
-    "#AACDDC",
-    "#F3E3D0"
-  ]
+  "github": "https://github.com/HiroSaito04"
 }
