@@ -63,9 +63,35 @@ def panel(draw, xy, fill=NAVY, outline=CREAM, width=4, radius=16):
     draw.rounded_rectangle(xy, radius=radius, fill=fill, outline=outline, width=width)
 
 def t(draw, xy, text, font, fill, anchor=None):
-    x, y = xy
-    draw.text((x+2, y+2), text, font=font, fill=SHADOW, anchor=anchor)
-    draw.text((x, y), text, font=font, fill=fill, anchor=anchor)
+    """True crisp pixel lettering for ALL generated map/animation labels.
+
+    Small monochrome source glyphs are scaled using nearest-neighbor sampling;
+    no smooth fonts or fonts shipped with the repository.
+    """
+    if font is FONT_BIG:
+        sz, scale = 12, 3
+    elif font is FONT_MED:
+        sz, scale = 12, 2
+    else:
+        sz, scale = 10, 2
+    try:
+        face = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf', sz)
+    except OSError:
+        face = ImageFont.load_default()
+    bbox = face.getbbox(text) or (0, 0, 1, sz)
+    width = int(face.getlength(text)) + 10
+    tile = Image.new('L', (max(12,width), sz+12), 0)
+    painter = ImageDraw.Draw(tile)
+    painter.text((4-bbox[0],3-bbox[1]), text, font=face, fill=255)
+    tile = tile.point(lambda v: 255 if v >= 110 else 0)
+    tight = tile.getbbox()
+    if tight: tile = tile.crop(tight)
+    tile = tile.resize((tile.width*scale,tile.height*scale), Image.Resampling.NEAREST)
+    x,y = xy
+    if anchor in ('ma','mm'):
+        x -= tile.width/2
+    draw.bitmap((round(x+2),round(y+2)), tile, fill='#0b1620')
+    draw.bitmap((round(x),round(y)), tile, fill=fill)
 
 def paste_scaled(base, sprite, x, y, scale):
     base.alpha_composite(upscale(sprite, scale), (x, y))
@@ -192,11 +218,11 @@ def make_pathfinder():
         panel(d,(952,84,1164,472), fill='#2b3f69ee', outline=GOLD, radius=18)
         t(d,(972,108),'QUEST LOG', FONT_MED, CREAM)
         info=[
-            '01  Start at the village gate',
-            '02  Walk the main road',
-            '03  Reach the portfolio zone',
-            '04  View the profile save file',
-            '05  Continue to contribution'
+            '01  START',
+            '02  ROAD',
+            '03  PORTFOLIO',
+            '04  PROFILE',
+            '05  ACTIVITY'
         ]
         y=148
         for line in info:
@@ -234,18 +260,18 @@ def make_contribution():
                 d.rounded_rectangle((gx+c*cell, gy+r*cell, gx+c*cell+32, gy+r*cell+32), radius=6, fill=color, outline='#0f1728')
         # section note at right
         panel(d,(760,78,1148,308), fill='#2b3f69ee', outline=GOLD, radius=18)
-        t(d,(784,102),'BRIO REPLACES THE SNAKE', FONT_MED, CREAM)
+        t(d,(784,102),'BRIO // ACTIVITY', FONT_MED, CREAM)
         notes=[
-            'Original contribution section style',
-            'is kept, but the animated player',
-            'for this activity is Brio.',
+            'WALK THE GRID.',
+            'COLLECT COMMITS.',
+            'KEEP LEVELING UP.',
             '',
-            'Sprite set used: brio1..12',
-            'Character moves across the',
-            'contribution grid instead of',
-            'the old snake animation.'
+            'CHARACTER  BRIO',
+            'SPRITES    01-12',
+            '',
+            ''
         ]
-        y=138
+        y=144
         for line in notes:
             if line:
                 t(d,(784,y),line,FONT_SML,'#e7f2ff')
@@ -257,16 +283,12 @@ def make_contribution():
         x = gx + pc*cell - 10
         y = gy + pr*cell - 4
         paste_scaled(img, frame, x, y, 2)
-        paste_scaled(img, brio_frame(direction, idx), 926, 236, 2)
-        t(d,(938,214),'BRIO', FONT_SML, PINK, anchor='ma')
         frames.append(img.convert('P', palette=Image.Palette.ADAPTIVE))
     frames[0].save(ASSETS / 'contribution-brio.gif', save_all=True, append_images=frames[1:], duration=120, loop=0, disposal=2)
 
 
 def main():
     ASSETS.mkdir(exist_ok=True)
-    make_hero()
-    make_savefile()
     make_buttons()
     make_pathfinder()
     make_contribution()

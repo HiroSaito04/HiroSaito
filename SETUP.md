@@ -1,40 +1,35 @@
-# Setup
+# Pixel Pathfinder — Review copy
 
-This is a complete replacement project for your GitHub profile repository.
+**This package has not been pushed to GitHub.** It is for your approval first.
 
-## Repository settings
+## Check locally in VS Code
 
-- Repository name: `HiroSaito04`
-- Visibility: `Public`
+1. Extract the ZIP into a separate folder, such as `HiroSaito04-review`.
+2. Open that folder in VS Code.
+3. Open `README.md`, then press `Ctrl+Shift+V` for Markdown Preview.
+4. Open `assets/profile-card.png` to inspect the redesigned card at full size.
+5. Open `assets/pathfinder.gif` and `assets/contribution-brio.gif` to inspect the animations.
 
-## Push steps
+## Changed design
 
-If you delete your current local project, extract this ZIP and open the `HiroSaito04` folder in VS Code, then run:
+- New pixel-font `assets/profile-card.png` matches the provided dark-neon-green reference.
+- The card uses the exact `boy_down.png` avatar.
+- The Pathfinder uses the supplied `player1.png` ... `player12.png` frames.
+- The single Contribution section uses `brio1.png` ... `brio12.png` frames.
+- All generated visual labels now use pixelated bitmap lettering.
+- The animated contribution grid is decorative; it is not a real GitHub activity count.
+
+## Regeneration
+
+The project includes the source scripts and sprites:
 
 ```bash
-git init
-git branch -M main
-git add .
-git commit -m "Set up Pixel Pathfinder profile"
-git remote add origin https://github.com/HiroSaito04/HiroSaito04.git
-git push -u origin main
+python scripts/render_card.py
+python scripts/build_profile.py
 ```
 
-If the repository already exists remotely and already has content, Git may ask you to pull first. If your remote repo is just your old profile project and you want to replace it completely, you can use:
+These scripts require Python and Pillow (`python -m pip install pillow`).
 
-```bash
-git push -u origin main --force
-```
+## IMPORTANT: preserve your old Git history
 
-Use force push only if you are sure you want to overwrite the repo history.
-
-## Files
-
-- `README.md` → profile README
-- `assets/boy_down.png` → your profile sprite
-- `assets/hero.png` → top banner
-- `assets/save-file.png` → save file section
-- `assets/pathfinder.gif` → animated map using player sprites
-- `assets/contribution-brio.gif` → contribution section using Brio
-- `scripts/build_profile.py` → rebuild generated assets locally
-- `source_assets/` → local source sprites and tiles copied into the project
+Do not delete the `.git` folder from your existing repo. Do not run `git init` or `git push --force` to update this project. After you approve the preview, copy the new files into your *existing tracked folder*, and make a normal commit/push. For now, no push is needed.
