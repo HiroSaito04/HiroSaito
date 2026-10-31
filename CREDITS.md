@@ -1,9 +1,8 @@
-# Pixel Pathfinder / Credits
+# Project credits and sources
 
-- Profile card design based on the reference image supplied by the user.
-- Actual avatar: supplied `boy_down.png` (not an AI-generated character substitution).
-- Pathfinder: supplied `player1.png`–`player12.png` sprite set.
-- Contribution animation: supplied `brio1.png`–`brio12.png` sprite set; decorative, not a live contribution graph.
-- Map: original scene inspired by the structure of supplied `village.tmx`.
-- Typography in generated art: locally rasterized bitmap-style lettering, no external font files shipped.
-- Developer profile identity: Mike Angelo A. Rubia / MR. ZHIROARK / HiroSaito04.
+- Avatar: supplied `boy_down.png` (replaceable).
+- Pathfinder animation: previously supplied `player1.png`–`player12.png` assets.
+- Contribution animation: previously supplied `brio1.png`–`brio12.png` assets. This is a decorative grid and **not** real GitHub contribution data.
+- Original map scene inspired by the user's supplied `village.tmx`.
+- The new profile card is entirely composed in `scripts/card-renderer.js` as code-generated SVG, including its built-in pixel alphabet. No external font files are bundled.
+- Verified profile link: https://mr-zhiroark-portfolio.vercel.app

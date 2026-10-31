@@ -1,12 +1,13 @@
 <!--
   PIXEL PATHFINDER / GitHub profile.
-  Profile card source: scripts/render_card.py
+  Profile card source: scripts/card-renderer.js
   Map + Brio animations: scripts/build_profile.py
-  Art assets have pixel text and use the provided sprites.
+  Profile card is fully code-generated SVG with editable text + avatar.
+  To edit interactively, open editor.html in a browser; keep your current Git history.
 -->
 
 <div align="center">
-  <img src="assets/profile-card.png" alt="MR. ZHIROARK pixel profile card with green-haired character, HiroSaito04 handle, and developer profile" width="100%" />
+  <img src="assets/profile-card.svg" alt="MR. ZHIROARK pixel profile card with green-haired character, HiroSaito04 handle, and developer profile" width="100%" />
 </div>
 
 <div align="center">
@@ -25,8 +26,6 @@
 <div align="center">
   <img src="assets/pathfinder.gif" alt="Pixel village quest map with a moving Player sprite" width="100%" />
 </div>
-
-A small village quest map inspired by the supplied TMX, with the **Player** sprite walking through the route. My <a href="https://mr-zhiroark-portfolio.vercel.app">portfolio</a> is the main hub for my latest work.
 
 ---
 

@@ -186,7 +186,7 @@ def make_pathfinder():
         d = ImageDraw.Draw(img)
         d.rectangle((0,70,W,H), fill='#6fbe5f')
         panel(d,(18,18,W-18,H-18), fill='#213154ee', outline=CREAM, radius=20)
-        t(d,(28,28),'PATHFINDER // VILLAGE MAP', FONT_BIG, GOLD)
+        t(d,(28,28),'', FONT_BIG, GOLD)
         # map board
         d.rounded_rectangle((32,72,930,486), radius=18, fill='#72c162', outline=CREAM, width=3)
         # subtle grid
