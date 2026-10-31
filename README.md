@@ -1,53 +1,62 @@
-<!--
-  PIXEL QUEST / A GitHub profile built from original pixel assets.
-  Personal identity and role use ONLY the readable title of the portfolio website.
-  Update profile.json and run: python scripts/build_pixel_assets.py
--->
+<!-- Pixel Pathfinder profile. Details aligned only to the user's portfolio title and identity. -->
 
 <div align="center">
   <a href="https://mr-zhiroark-portfolio.vercel.app">
-    <img src="assets/hero.svg" alt="Pixel Quest: Mike Angelo A. Rubia, Full Stack Developer, HiroSaito04, original pixel-art hero in a side-scrolling game landscape" width="100%" />
+    <img src="assets/hero.png" alt="Pixel Pathfinder hero banner for Mike Angelo A. Rubia" width="100%" />
   </a>
 </div>
 
 <div align="center">
-  <strong>🎮 PIXEL QUEST · PLAYER PROFILE</strong>
+  <strong>🎮 PIXEL PATHFINDER</strong>
   <br />
-  <sub>Original 8-bit-inspired artwork · Built for GitHub</sub>
+  <sub>Retro game styling · Quest map navigation · Animated sprite sections</sub>
 </div>
 
 <br />
 
 <div align="center">
-  <a href="https://mr-zhiroark-portfolio.vercel.app"><img src="assets/button-portfolio.svg" alt="Visit portfolio" width="43%" /></a>
-  <a href="https://github.com/HiroSaito04"><img src="assets/button-github.svg" alt="Open GitHub" width="43%" /></a>
+  <a href="https://mr-zhiroark-portfolio.vercel.app"><img src="assets/button-portfolio.png" alt="Open Portfolio" width="43%" /></a>
+  <a href="https://github.com/HiroSaito04"><img src="assets/button-github.png" alt="Open GitHub" width="43%" /></a>
 </div>
 
-## 🗂️ SAVE FILE // PLAYER INFO
+## 💾 Save File
 
 <div align="center">
-  <img src="assets/save-file.svg" alt="Player information: Mike Angelo A. Rubia / Full Stack Developer / @HiroSaito04" width="100%" />
+  <img src="assets/save-file.png" alt="Player save file showing Mike Angelo A. Rubia, Full Stack Developer, and HiroSaito04" width="100%" />
 </div>
 
-> **Player:** Mike Angelo A. Rubia  
+> **Player Name:** Mike Angelo A. Rubia  
 > **Class:** Full Stack Developer  
-> **Main world:** [Official portfolio](https://mr-zhiroark-portfolio.vercel.app)
+> **Handle:** `@HiroSaito04`  
+> **Main Hub:** [mr-zhiroark-portfolio.vercel.app](https://mr-zhiroark-portfolio.vercel.app)
 
-My website is the **source of truth** for my work and background. Visit it for the latest details instead of relying on a copied list that can go out of date.
+This GitHub profile is styled like a pixel game, but my **portfolio website is still the main source** for my projects and updated work.
 
-## 🗺️ QUEST BOARD // EXPLORE
+---
+
+## 🗺️ Pathfinder
 
 <div align="center">
-  <img src="assets/quest-board.svg" alt="Pixel-art quest menu: open portfolio, explore GitHub, follow the contribution quest" width="100%" />
+  <img src="assets/pathfinder.gif" alt="Animated pixel pathfinder map with a moving character sprite exploring portfolio, pathfinder, and contribution zones" width="100%" />
 </div>
 
-| Quest | Destination |
-| :--- | :--- |
-| 🟢 **01 · Open Portfolio** | [mr-zhiroark-portfolio.vercel.app](https://mr-zhiroark-portfolio.vercel.app) |
-| 🔵 **02 · Explore GitHub** | [github.com/HiroSaito04](https://github.com/HiroSaito04?tab=repositories) |
-| 🩷 **03 · Contribution Quest** | [Jump to snake animation](#-contribution-quest--snake) |
+Follow the sprite through the quest map:
 
-## 🐍 CONTRIBUTION QUEST // SNAKE
+- **Portfolio Gate** → [Visit portfolio](https://mr-zhiroark-portfolio.vercel.app)
+- **Pathfinder Board** → explore this README like a game menu
+- **Contribution Zone** → check the animated contribution section below
+
+---
+
+## 🧩 Contribution
+
+<div align="center">
+  <img src="assets/contribution-run.gif" alt="Animated pixel contribution field with a character sprite moving across the grid" width="100%" />
+</div>
+
+A pixel intro to the activity zone — then the real GitHub contribution animation continues below.
+
+### 🐍 Contribution Snake
 
 <div align="center">
   <picture>
@@ -58,11 +67,13 @@ My website is the **source of truth** for my work and background. Visit it for t
 </div>
 
 <div align="center">
-  <sub>The snake updates automatically through GitHub Actions. If it isn't visible yet, run the workflow once from the Actions tab.</sub>
+  <sub>If the snake is missing, go to <b>Actions</b> and run <b>Generate Snake Animation</b> once.</sub>
 </div>
 
-<br />
+---
 
 <div align="center">
-  <a href="https://mr-zhiroark-portfolio.vercel.app"><img src="assets/footer.svg" alt="Thanks for visiting. Save progress. Keep building." width="100%" /></a>
+  <a href="https://mr-zhiroark-portfolio.vercel.app">
+    <img src="assets/footer.png" alt="Save progress and keep building" width="100%" />
+  </a>
 </div>

@@ -1,7 +1,15 @@
-# Original assets and credits
+# Credits
 
-The pixel-art scenery, pixel lettering, character sprite, panel framing, quest board, and buttons in this project were built uniquely for the `HiroSaito04` GitHub profile. The `scripts/build_pixel_assets.py` generator draws shapes directly into SVG: no third-party game sprites or font files are bundled.
+This package includes:
 
-The contribution snake workflow uses `Platane/snk@v3` to render a snake from GitHub activity and `crazy-max/ghaction-github-pages@v5` to publish the resulting assets. The request to retain the contribution activity and snake section originally came from the user's MD Abu template.
+- A custom **Pixel Pathfinder** GitHub profile design
+- Pixel-art scenes composed using assets provided by the user in `assets.zip`
+- A dedicated **Pathfinder** section with an animated moving sprite
+- A dedicated **Contribution** section with an animated sprite run
+- The GitHub contribution snake workflow
 
-The portfolio is the sole source for personal profile details: https://mr-zhiroark-portfolio.vercel.app. Only its publicly readable page title (name and role) could be verified at creation time; all other personal claims were intentionally left out.
+Profile details shown directly in the README are aligned to the user's portfolio identity:
+- **Mike Angelo A. Rubia**
+- **Full Stack Developer**
+- **@HiroSaito04**
+- Portfolio: `mr-zhiroark-portfolio.vercel.app`
