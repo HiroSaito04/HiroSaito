@@ -6,7 +6,7 @@
   </a>
 
   <a href="https://mr-zhiroark-portfolio.vercel.app">
-    <img src="assets/button-portfolio.png" alt="Visit portfolio" width="43%" />
+    <img src="assets/button-portfolio.png" alt="Visit portfolio Button" width="43%" />
   </a>
 </div>
 
