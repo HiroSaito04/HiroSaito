@@ -29,9 +29,9 @@ Your edited route and tiles now appear in `assets/pathfinder.gif`. Open `preview
 
 ## Brio over the REAL GitHub contribution calendar
 
-The local ZIP includes a **clearly labeled sample visualization** so you can judge its styling without pretending sample levels are your real history. Brio moves through the actual GitHub-shaped 53-week calendar, not a made-up 6-row green game board.
+The ZIP includes a **public GitHub snapshot for `HiroSaito04`**, covering daily counts through **October 31, 2026** (205 contributions for the preceding year). These daily counts are real, while the archived snapshot’s color intensity bands are approximate. Brio moves through the same GitHub-shaped 53-week calendar, not a made-up 6-row game board.
 
-To download your public GitHub contribution levels and regenerate locally (internet required):
+To download **your actual HiroSaito04 public GitHub contribution levels** and regenerate locally (internet required), double-click `GENERATE_REAL_BRIO.bat` on Windows, or use:
 
 ```powershell
 python scripts/render_contributions.py --fetch
@@ -66,3 +66,18 @@ Then rerun:
 ```bash
 python scripts/render_map.py
 ```
+
+
+## Change Brio walking speed
+
+The updated default is **185 frames × 200 milliseconds** = approximately **37 seconds per loop** (previously about 6.5 seconds). This is roughly 5.7× slower.
+
+Use `--frame-ms` to change timing, and `--frames` to adjust the smoothness:
+
+```powershell
+python scripts/render_contributions.py --fetch --frame-ms 260 --frames 185
+```
+
+`--fetch` uses your live public GitHub contribution levels; `--preview` uses explicitly labeled sample values for testing motion only. If network fetching fails, it will not overwrite your saved real data. `data/contributions.json` contains the archived snapshot until the first successful live fetch.
+
+**No automatic push from this review ZIP.** The included GitHub Actions workflow only works after you intentionally publish the files.

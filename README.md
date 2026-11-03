@@ -33,6 +33,6 @@
   <img src="assets/contribution-brio.gif" alt="GitHub-style contribution heatmap with Brio sprite running over the calendar" width="100%" />
 </div>
 
-Brio moves across a GitHub-style **53-week activity calendar** with the familiar month/week labels and green intensity legend. After the first successful contribution workflow run, this animation uses **real public contribution levels** from GitHub. Until then, the review file is visibly labeled *sample preview* so it cannot be confused with actual activity.
+Brio moves across a GitHub-style **53-week activity calendar** with the familiar month/week labels and green intensity legend. This review includes a verified historical **public GitHub calendar snapshot for `HiroSaito04`** (205 contributions in the year ending October 31, 2026). The daily counts reflect that snapshot; its color intensity bins are approximate. To update to the **latest exact GitHub intensity levels**, run `GENERATE_REAL_BRIO.bat` (Windows) or `python scripts/render_contributions.py --fetch` with internet access. Brio walks about **37 seconds per cycle**, rather than 6.5 seconds. The GitHub Actions workflow can refresh the calendar daily once you approve and publish it.
 
 <div align="center"><sub>PIXEL PATHFINDER · SAVE PROGRESS · KEEP BUILDING</sub></div>

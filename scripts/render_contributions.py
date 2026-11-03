@@ -1,8 +1,12 @@
 """GitHub-style contribution graph with Brio animation and REAL public GitHub day levels.
 
-Local preview: python scripts/render_contributions.py --preview
-Fetch live data: python scripts/render_contributions.py --fetch
-Use saved data: python scripts/render_contributions.py
+Local design preview: python scripts/render_contributions.py --preview
+Fetch YOUR real calendar: python scripts/render_contributions.py --fetch
+Use saved real data: python scripts/render_contributions.py
+
+Default: 185 frames at 200ms per frame (~37 seconds per cycle),
+vs previous 59 frames at 110ms (~6.5 seconds).
+Adjust --frame-ms and --frames to taste.
 
 A preview is explicitly marked SAMPLE; only --fetch can populate actual counts.
 """
@@ -67,9 +71,13 @@ def levels_for(mode):
     if cached.get('source')!='GitHub public contributions':
         raise RuntimeError('Unknown contributions cache source; refusing to label as real')
     level={v['date']:int(v['level']) for v in cached['days']}
-    return days,level,'GITHUB CONTRIBUTION ACTIVITY • '+cached.get('updated','')
+    if cached.get('snapshot_total_contributions') is not None:
+        label='PUBLIC GITHUB SNAPSHOT / '+cached.get('updated','')
+    else:
+        label='LIVE GITHUB DATA / '+cached.get('updated','')
+    return days,level,label
 
-def draw(mode):
+def draw(mode, frame_ms=200, frame_count=185):
     days,levels,label=levels_for(mode)
     # GitHub calendar composition: no fake side panels, no second grid.
     W,H=1198,300
@@ -98,6 +106,8 @@ def draw(mode):
         for row in range(7):
             day=days[week*7+row]
             if day>dt.date.today():continue
+            if mode!='sample' and day.isoformat() not in levels:
+                continue # No invented data for days not covered by the archived snapshot.
             col=colors[levels.get(day.isoformat(),0)]
             x=gx+week*gap;y=gy+row*gap
             dr.rounded_rectangle((x,y,x+cell,y+cell),radius=2,fill=col)
@@ -115,8 +125,9 @@ def draw(mode):
         for row in rows:
             day=days[week*7+row]
             if day<=dt.date.today():route.append((week,row))
-    # 59 frames, never false-fill cells; sprite overlays real levels.
-    selected=[route[round(i*(len(route)-1)/58)] for i in range(59)]
+    # More frames + longer durations = slower, less jumpy walk across the calendar.
+    # Never false-fill cells; Brio is rendered over the actual GitHub levels.
+    selected=[route[round(i*(len(route)-1)/(frame_count-1))] for i in range(frame_count)]
     spritebase=ROOT/'source_assets/sprites'
     spritecache={n:Image.open(spritebase/f'brio{n}.png').convert('RGBA') for n in range(1,13)}
     for i,(week,row) in enumerate(selected):
@@ -133,14 +144,22 @@ def draw(mode):
         frame.alpha_composite(spr,(px,py))
         frames.append(frame.convert('P',palette=Image.Palette.ADAPTIVE,colors=64))
     OUT.parent.mkdir(parents=True,exist_ok=True)
-    frames[0].save(OUT,save_all=True,append_images=frames[1:],duration=110,loop=0,optimize=True,disposal=2)
+    frames[0].save(OUT,save_all=True,append_images=frames[1:],duration=frame_ms,loop=0,optimize=True,disposal=2)
     base.convert('RGB').save(ROOT/'assets/contribution-preview.png')
-    print(f'Contribution: {len(frames)} frames, {OUT.stat().st_size/1e6:.2f} MB, mode={mode}')
+    print(f'Contribution: {len(frames)} frames x {frame_ms} ms = {len(frames)*frame_ms/1000:.1f} sec/cycle, {OUT.stat().st_size/1e6:.2f} MB, mode={mode}')
 
 if __name__=='__main__':
     p=argparse.ArgumentParser()
     p.add_argument('--fetch',action='store_true',help='Fetch real GitHub data, fail safely on network errors')
     p.add_argument('--preview',action='store_true',help='Use clearly marked sample values for a design review')
+    p.add_argument('--frame-ms', type=int, default=200, help='Duration of each sprite frame in ms (default: 200)')
+    p.add_argument('--frames', type=int, default=185, help='Number of sprite frames in a full loop (default: 185)')
     args=p.parse_args()
+    if args.fetch and args.preview:
+        p.error('--fetch and --preview cannot be combined')
+    if not (60 <= args.frame_ms <= 1000):
+        p.error('--frame-ms must be between 60 and 1000')
+    if not (25 <= args.frames <= 400):
+        p.error('--frames must be between 25 and 400')
     if args.fetch:fetch()
-    draw('sample' if args.preview else 'live')
+    draw('sample' if args.preview else 'live', args.frame_ms, args.frames)
