@@ -2,7 +2,7 @@
 
 <div align="center">
   <a href="https://mr-zhiroark-portfolio.vercel.app">
-    <img src="assets/profile-card.svg" alt="Mike Angelo A. Rubia — pixel-art developer profile" width="100%" />
+    <img src="assets/profile-card.svg" alt="Mike Angelo A. Rubia — Software Developer Profile" width="100%" />
   </a>
 
   <a href="https://mr-zhiroark-portfolio.vercel.app">
