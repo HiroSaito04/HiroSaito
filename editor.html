@@ -1,145 +1,445 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>MR. ZHIROARK · Pixel Card Editor</title>
-<style>
- :root{--bg:#0b1311;--panel:#122119;--lime:#8bdd54;--border:#315a2b;--text:#f4f8ee;--muted:#9aac97}
- *{box-sizing:border-box}
- body{margin:0;background:var(--bg);color:var(--text);font:14px/1.6 ui-monospace,SFMono-Regular,Consolas,monospace}
- .wrap{width:min(1540px,96vw);margin:0 auto;padding:28px 0 50px}
- header{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;border-bottom:1px solid var(--border);padding-bottom:16px;margin-bottom:20px}
- h1{margin:0;font-size:clamp(20px,3vw,32px);font-weight:800;letter-spacing:.03em}
- h1 span{color:var(--lime)}
- p{margin:.3em 0;color:var(--muted)}
- .label{font-size:11px;color:var(--lime);text-transform:uppercase;letter-spacing:.11em}
- .card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:16px}
- .preview{min-height:180px;display:grid;place-items:center;overflow:hidden;padding:10px;background:#080f0d;border:1px solid #274b2c;border-radius:10px}
- .preview svg{display:block;width:100%;height:auto;max-height:75vh}
- .split{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,360px);gap:18px;margin-top:18px}
- .fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}
- .field{display:flex;flex-direction:column;gap:6px}
- .field.full{grid-column:1/-1}
- label{font-size:12px;font-weight:700;color:#c7d5c3}
- input[type=text]{border:1px solid #42603a;border-radius:8px;background:#0d1811;color:#f6f9ef;padding:11px 12px;min-height:42px;font:inherit;width:100%;outline:none}
- input[type=text]:focus{border-color:var(--lime);box-shadow:0 0 0 2px #8bdd5430}
- input[type=color]{width:100%;height:44px;background:#0d1811;border:1px solid #42603a;border-radius:8px;cursor:pointer}
- input[type=file]{display:block;max-width:100%;font:inherit;color:var(--text)}
- .avatar-box{display:grid;grid-template-columns:78px 1fr;align-items:center;gap:12px;padding:12px;border:1px dashed var(--border);border-radius:10px}
- .avatar-box img{width:74px;height:74px;object-fit:contain;image-rendering:pixelated;background:#30542b;border-radius:8px}
- .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
- button{cursor:pointer;border:1px solid #5e8f44;background:#1a331f;color:#edffe4;padding:12px 16px;border-radius:8px;font-weight:800;font:inherit}
- button:hover{background:#254829}
- button.primary{background:#5d9935;color:#091208;border-color:#8bdd54;font-weight:900}
- button.primary:hover{background:#8bdd54}
- .note{background:#101d16;padding:12px;border-radius:9px;color:#b6c9b1;margin-top:16px;border-left:3px solid var(--lime)}
- code{color:#a7e67d}
- .status{color:#c4d8b6;min-height:22px}
- @media(max-width:900px){.split{grid-template-columns:1fr}.fields{grid-template-columns:1fr}}
-</style>
-</head>
-<body>
- <div class="wrap">
-  <header><div><div class="label">OFFLINE · LOCAL EDITOR · NO GITHUB CHANGES</div><h1>PIXEL <span>PROFILE CARD</span> EDITOR</h1><p>Edit text, change the avatar, export a self-contained SVG.</p></div><div>PROJECT: <b style="color:var(--lime)">HIROSAITO04</b></div></header>
-  <section class="card"><div class="label" style="margin-bottom:8px">LIVE PROFILE PREVIEW</div><div id="preview" class="preview"></div></section>
-  <div class="split">
-   <section class="card">
-    <div class="label" style="margin-bottom:13px">PLAYER DETAILS / EDITABLE</div>
-    <div class="fields">
-     <div class="field"><label for="username">GitHub username / terminal tag</label><input id="username" type="text" maxlength="40" /></div>
-     <div class="field"><label for="displayName">Main display name</label><input id="displayName" type="text" maxlength="48" /></div>
-     <div class="field full"><label for="role">Role or subtitle</label><input id="role" type="text" maxlength="85" /></div>
-     <div class="field full"><label for="tagline">Description / tagline</label><input id="tagline" type="text" maxlength="110" /></div>
-     <div class="field full"><label for="githubLabel">GitHub link caption</label><input id="githubLabel" type="text" maxlength="70" /></div>
-     <div class="field"><label for="accent">Accent color</label><input id="accent" type="color" /></div>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>MR. ZHIROARK · Pixel Card Editor</title>
+    <style>
+      :root {
+        --bg: #0b1311;
+        --panel: #122119;
+        --lime: #8bdd54;
+        --border: #315a2b;
+        --text: #f4f8ee;
+        --muted: #9aac97;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font:
+          14px/1.6 ui-monospace,
+          SFMono-Regular,
+          Consolas,
+          monospace;
+      }
+      .wrap {
+        width: min(1540px, 96vw);
+        margin: 0 auto;
+        padding: 28px 0 50px;
+      }
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        flex-wrap: wrap;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 16px;
+        margin-bottom: 20px;
+      }
+      h1 {
+        margin: 0;
+        font-size: clamp(20px, 3vw, 32px);
+        font-weight: 800;
+        letter-spacing: 0.03em;
+      }
+      h1 span {
+        color: var(--lime);
+      }
+      p {
+        margin: 0.3em 0;
+        color: var(--muted);
+      }
+      .label {
+        font-size: 11px;
+        color: var(--lime);
+        text-transform: uppercase;
+        letter-spacing: 0.11em;
+      }
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 16px;
+      }
+      .preview {
+        min-height: 180px;
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+        padding: 10px;
+        background: #080f0d;
+        border: 1px solid #274b2c;
+        border-radius: 10px;
+      }
+      .preview svg {
+        display: block;
+        width: 100%;
+        height: auto;
+        max-height: 75vh;
+      }
+      .split {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+        gap: 18px;
+        margin-top: 18px;
+      }
+      .fields {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      .field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .field.full {
+        grid-column: 1/-1;
+      }
+      label {
+        font-size: 12px;
+        font-weight: 700;
+        color: #c7d5c3;
+      }
+      input[type="text"] {
+        border: 1px solid #42603a;
+        border-radius: 8px;
+        background: #0d1811;
+        color: #f6f9ef;
+        padding: 11px 12px;
+        min-height: 42px;
+        font: inherit;
+        width: 100%;
+        outline: none;
+      }
+      input[type="text"]:focus {
+        border-color: var(--lime);
+        box-shadow: 0 0 0 2px #8bdd5430;
+      }
+      input[type="color"] {
+        width: 100%;
+        height: 44px;
+        background: #0d1811;
+        border: 1px solid #42603a;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+      input[type="file"] {
+        display: block;
+        max-width: 100%;
+        font: inherit;
+        color: var(--text);
+      }
+      .avatar-box {
+        display: grid;
+        grid-template-columns: 78px 1fr;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+        border: 1px dashed var(--border);
+        border-radius: 10px;
+      }
+      .avatar-box img {
+        width: 74px;
+        height: 74px;
+        object-fit: contain;
+        image-rendering: pixelated;
+        background: #30542b;
+        border-radius: 8px;
+      }
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 16px;
+      }
+      button {
+        cursor: pointer;
+        border: 1px solid #5e8f44;
+        background: #1a331f;
+        color: #edffe4;
+        padding: 12px 16px;
+        border-radius: 8px;
+        font-weight: 800;
+        font: inherit;
+      }
+      button:hover {
+        background: #254829;
+      }
+      button.primary {
+        background: #5d9935;
+        color: #091208;
+        border-color: #8bdd54;
+        font-weight: 900;
+      }
+      button.primary:hover {
+        background: #8bdd54;
+      }
+      .note {
+        background: #101d16;
+        padding: 12px;
+        border-radius: 9px;
+        color: #b6c9b1;
+        margin-top: 16px;
+        border-left: 3px solid var(--lime);
+      }
+      code {
+        color: #a7e67d;
+      }
+      .status {
+        color: #c4d8b6;
+        min-height: 22px;
+      }
+      @media (max-width: 900px) {
+        .split {
+          grid-template-columns: 1fr;
+        }
+        .fields {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <div>
+          <div class="label">OFFLINE · LOCAL EDITOR · NO GITHUB CHANGES</div>
+          <h1>PIXEL <span>PROFILE CARD</span> EDITOR</h1>
+          <p>Edit text, change the avatar, export a self-contained SVG.</p>
+        </div>
+        <div>PROJECT: <b style="color: var(--lime)">HIROSAITO04</b></div>
+      </header>
+      <section class="card">
+        <div class="label" style="margin-bottom: 8px">LIVE PROFILE PREVIEW</div>
+        <div id="preview" class="preview"></div>
+      </section>
+      <div class="split">
+        <section class="card">
+          <div class="label" style="margin-bottom: 13px">PLAYER DETAILS / EDITABLE</div>
+          <div class="fields">
+            <div class="field">
+              <label for="username">GitHub username / terminal tag</label
+              ><input id="username" type="text" maxlength="40" />
+            </div>
+            <div class="field">
+              <label for="displayName">Main display name</label
+              ><input id="displayName" type="text" maxlength="48" />
+            </div>
+            <div class="field full">
+              <label for="role">Role or subtitle</label
+              ><input id="role" type="text" maxlength="85" />
+            </div>
+            <div class="field full">
+              <label for="tagline">Description / tagline</label
+              ><input id="tagline" type="text" maxlength="110" />
+            </div>
+            <div class="field full">
+              <label for="githubLabel">GitHub link caption</label
+              ><input id="githubLabel" type="text" maxlength="70" />
+            </div>
+            <div class="field">
+              <label for="accent">Accent color</label><input id="accent" type="color" />
+            </div>
+          </div>
+          <div class="actions">
+            <button class="primary" id="svgDownload" type="button">
+              EXPORT SVG FOR GITHUB</button
+            ><button id="pngDownload" type="button">EXPORT PNG</button
+            ><button id="configDownload" type="button">SAVE CONFIG JSON</button>
+          </div>
+        </section>
+        <section class="card">
+          <div class="label" style="margin-bottom: 13px">
+            CHARACTER FRAME / CHANGEABLE
+          </div>
+          <div class="avatar-box">
+            <img id="avatarThumb" alt="Selected avatar" />
+            <div>
+              <label for="avatarFile">Replace character image</label
+              ><input
+                id="avatarFile"
+                type="file"
+                accept="image/png,image/jpeg,image/webp"
+              />
+              <p>PNG with transparency works best. Pixel edges stay sharp.</p>
+            </div>
+          </div>
+          <div class="actions">
+            <button id="resetAvatar" type="button">RESTORE BOY_DOWN</button
+            ><button id="loadConfig" type="button">IMPORT CONFIG</button
+            ><input
+              id="configFile"
+              type="file"
+              accept=".json,application/json"
+              hidden
+            /><button id="loadSvg" type="button">REOPEN EXPORTED SVG</button
+            ><input id="svgFile" type="file" accept=".svg,image/svg+xml" hidden />
+          </div>
+          <div class="note">
+            Everything inside the exported <code>profile-card.svg</code> is drawn as
+            code. Text is built from pixel glyph shapes. Your uploaded image is embedded
+            in the file so GitHub can display it without loading another image.
+          </div>
+          <p style="margin-top: 18px">
+            After exporting, replace <code>assets/profile-card.svg</code> in your
+            project. Preview <code>README.md</code> in VS Code. No Git commands are run
+            here.
+          </p>
+          <p id="status" class="status" aria-live="polite"></p>
+        </section>
+      </div>
     </div>
-    <div class="actions"><button class="primary" id="svgDownload" type="button">EXPORT SVG FOR GITHUB</button><button id="pngDownload" type="button">EXPORT PNG</button><button id="configDownload" type="button">SAVE CONFIG JSON</button></div>
-   </section>
-   <section class="card">
-    <div class="label" style="margin-bottom:13px">CHARACTER FRAME / CHANGEABLE</div>
-    <div class="avatar-box"><img id="avatarThumb" alt="Selected avatar"/><div><label for="avatarFile">Replace character image</label><input id="avatarFile" type="file" accept="image/png,image/jpeg,image/webp" /><p>PNG with transparency works best. Pixel edges stay sharp.</p></div></div>
-    <div class="actions"><button id="resetAvatar" type="button">RESTORE BOY_DOWN</button><button id="loadConfig" type="button">IMPORT CONFIG</button><input id="configFile" type="file" accept=".json,application/json" hidden /><button id="loadSvg" type="button">REOPEN EXPORTED SVG</button><input id="svgFile" type="file" accept=".svg,image/svg+xml" hidden /></div>
-    <div class="note">Everything inside the exported <code>profile-card.svg</code> is drawn as code. Text is built from pixel glyph shapes. Your uploaded image is embedded in the file so GitHub can display it without loading another image.</div>
-    <p style="margin-top:18px">After exporting, replace <code>assets/profile-card.svg</code> in your project. Preview <code>README.md</code> in VS Code. No Git commands are run here.</p>
-    <p id="status" class="status" aria-live="polite"></p>
-   </section>
-  </div>
- </div>
- <script src="scripts/card-renderer.js"></script>
- <script src="scripts/default-config.js"></script>
- <script>
- (function(){
-   'use strict';
-   const defaults=structuredClone(window.DEFAULT_PIXEL_CARD);
-   let config=structuredClone(defaults);
-   let avatar=window.DEFAULT_AVATAR_DATA;
-   const keys=['username','displayName','role','tagline','githubLabel','accent'];
-   const $=id=>document.getElementById(id);
-   function status(message){$('status').textContent=message;}
-   function refresh(){
-     for (const k of keys) config[k]=$(k).value;
-     $('preview').innerHTML=PixelCard.renderCard(config,avatar);
-     $('avatarThumb').src=avatar;
-   }
-   function putConfig(obj){
-     config={...defaults,...obj};
-     for(const k of keys) $(k).value=config[k]||defaults[k];
-     refresh();
-   }
-   function save(filename,content,mime){
-     const blob=content instanceof Blob ? content : new Blob([content],{type:mime});
-     const url=URL.createObjectURL(blob);
-     const a=document.createElement('a');a.href=url;a.download=filename;
-     document.body.appendChild(a);a.click();a.remove();
-     setTimeout(()=>URL.revokeObjectURL(url),1000);
-   }
-   for(const k of keys) $(k).addEventListener('input',refresh);
-   $('avatarFile').addEventListener('change',e=>{
-     const file=e.target.files[0];if(!file)return;
-     if(!['image/png','image/jpeg','image/webp'].includes(file.type)){status('Choose a PNG, JPG, or WebP image.');return;}
-     const reader=new FileReader();
-     reader.onload=()=>{avatar=String(reader.result);refresh();status('Avatar updated in preview. Export the SVG to save it.');};
-     reader.readAsDataURL(file);
-   });
-   $('resetAvatar').addEventListener('click',()=>{avatar=window.DEFAULT_AVATAR_DATA;$('avatarFile').value='';refresh();status('Restored the provided boy_down.png image.');});
-   $('svgDownload').addEventListener('click',()=>{save('profile-card.svg',PixelCard.renderCard(config,avatar),'image/svg+xml;charset=utf-8');status('SVG exported. Copy it into assets/profile-card.svg.');});
-   $('configDownload').addEventListener('click',()=>{save('profile.json',JSON.stringify(config,null,2)+'\n','application/json;charset=utf-8');status('Configuration saved. Replace profile.json to keep these values.');});
-   $('pngDownload').addEventListener('click',()=>{
-     const svg=PixelCard.renderCard(config,avatar);
-     const blob=new Blob([svg],{type:'image/svg+xml'});
-     const url=URL.createObjectURL(blob);
-     const im=new Image();
-     im.onload=()=>{const cv=document.createElement('canvas');cv.width=1400;cv.height=600;
-       cv.getContext('2d').drawImage(im,0,0);
-       cv.toBlob(b=>{if(b)save('profile-card.png',b,'image/png');else status('PNG export unavailable in this browser. SVG export still works.');},'image/png');
-       URL.revokeObjectURL(url);
-     };
-     im.onerror=()=>{status('PNG export unavailable in this browser. Export SVG instead.');URL.revokeObjectURL(url);};
-     im.src=url;
-   });
-   $('loadConfig').addEventListener('click',()=>$('configFile').click());
-   $('configFile').addEventListener('change',async e=>{
-     const f=e.target.files[0];if(!f)return;
-     try {const parsed=JSON.parse(await f.text());putConfig(parsed);status('Config imported.');}
-     catch(err){status('Could not parse the selected JSON config.');}
-   });
-   $('loadSvg').addEventListener('click',()=>$('svgFile').click());
-   $('svgFile').addEventListener('change',async e=>{
-     const file=e.target.files[0];if(!file)return;
-     try {
-       const doc=new DOMParser().parseFromString(await file.text(),'image/svg+xml');
-       if(doc.querySelector('parsererror'))throw Error('Invalid SVG');
-       const node=doc.getElementById('pixelCardEditorState');
-       if(!node)throw Error('No editor state');
-       const saved=JSON.parse(node.textContent);
-       if(saved.avatarDataUri && /^data:image\/(png|jpeg|jpg|webp);base64,/.test(saved.avatarDataUri))avatar=saved.avatarDataUri;
-       putConfig(saved.config||{});
-       status('Previous SVG reopened. All text and the portrait are editable again.');
-     } catch(err){status('This SVG does not contain Pixel Card editor data.');}
-   });
-   putConfig(defaults);
- })();
- </script>
-</body>
+    <script src="scripts/card-renderer.js"></script>
+    <script src="scripts/default-config.js"></script>
+    <script>
+      (function () {
+        "use strict";
+        const defaults = structuredClone(window.DEFAULT_PIXEL_CARD);
+        let config = structuredClone(defaults);
+        let avatar = window.DEFAULT_AVATAR_DATA;
+        const keys = [
+          "username",
+          "displayName",
+          "role",
+          "tagline",
+          "githubLabel",
+          "accent",
+        ];
+        const $ = (id) => document.getElementById(id);
+        function status(message) {
+          $("status").textContent = message;
+        }
+        function refresh() {
+          for (const k of keys) config[k] = $(k).value;
+          $("preview").innerHTML = PixelCard.renderCard(config, avatar);
+          $("avatarThumb").src = avatar;
+        }
+        function putConfig(obj) {
+          config = { ...defaults, ...obj };
+          for (const k of keys) $(k).value = config[k] || defaults[k];
+          refresh();
+        }
+        function save(filename, content, mime) {
+          const blob =
+            content instanceof Blob ? content : new Blob([content], { type: mime });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = filename;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          setTimeout(() => URL.revokeObjectURL(url), 1000);
+        }
+        for (const k of keys) $(k).addEventListener("input", refresh);
+        $("avatarFile").addEventListener("change", (e) => {
+          const file = e.target.files[0];
+          if (!file) return;
+          if (!["image/png", "image/jpeg", "image/webp"].includes(file.type)) {
+            status("Choose a PNG, JPG, or WebP image.");
+            return;
+          }
+          const reader = new FileReader();
+          reader.onload = () => {
+            avatar = String(reader.result);
+            refresh();
+            status("Avatar updated in preview. Export the SVG to save it.");
+          };
+          reader.readAsDataURL(file);
+        });
+        $("resetAvatar").addEventListener("click", () => {
+          avatar = window.DEFAULT_AVATAR_DATA;
+          $("avatarFile").value = "";
+          refresh();
+          status("Restored the provided boy_down.png image.");
+        });
+        $("svgDownload").addEventListener("click", () => {
+          save(
+            "profile-card.svg",
+            PixelCard.renderCard(config, avatar),
+            "image/svg+xml;charset=utf-8",
+          );
+          status("SVG exported. Copy it into assets/profile-card.svg.");
+        });
+        $("configDownload").addEventListener("click", () => {
+          save(
+            "profile.json",
+            JSON.stringify(config, null, 2) + "\n",
+            "application/json;charset=utf-8",
+          );
+          status("Configuration saved. Replace profile.json to keep these values.");
+        });
+        $("pngDownload").addEventListener("click", () => {
+          const svg = PixelCard.renderCard(config, avatar);
+          const blob = new Blob([svg], { type: "image/svg+xml" });
+          const url = URL.createObjectURL(blob);
+          const im = new Image();
+          im.onload = () => {
+            const cv = document.createElement("canvas");
+            cv.width = 1400;
+            cv.height = 600;
+            cv.getContext("2d").drawImage(im, 0, 0);
+            cv.toBlob((b) => {
+              if (b) save("profile-card.png", b, "image/png");
+              else
+                status(
+                  "PNG export unavailable in this browser. SVG export still works.",
+                );
+            }, "image/png");
+            URL.revokeObjectURL(url);
+          };
+          im.onerror = () => {
+            status("PNG export unavailable in this browser. Export SVG instead.");
+            URL.revokeObjectURL(url);
+          };
+          im.src = url;
+        });
+        $("loadConfig").addEventListener("click", () => $("configFile").click());
+        $("configFile").addEventListener("change", async (e) => {
+          const f = e.target.files[0];
+          if (!f) return;
+          try {
+            const parsed = JSON.parse(await f.text());
+            putConfig(parsed);
+            status("Config imported.");
+          } catch (err) {
+            status("Could not parse the selected JSON config.");
+          }
+        });
+        $("loadSvg").addEventListener("click", () => $("svgFile").click());
+        $("svgFile").addEventListener("change", async (e) => {
+          const file = e.target.files[0];
+          if (!file) return;
+          try {
+            const doc = new DOMParser().parseFromString(
+              await file.text(),
+              "image/svg+xml",
+            );
+            if (doc.querySelector("parsererror")) throw Error("Invalid SVG");
+            const node = doc.getElementById("pixelCardEditorState");
+            if (!node) throw Error("No editor state");
+            const saved = JSON.parse(node.textContent);
+            if (
+              saved.avatarDataUri &&
+              /^data:image\/(png|jpeg|jpg|webp);base64,/.test(saved.avatarDataUri)
+            )
+              avatar = saved.avatarDataUri;
+            putConfig(saved.config || {});
+            status(
+              "Previous SVG reopened. All text and the portrait are editable again.",
+            );
+          } catch (err) {
+            status("This SVG does not contain Pixel Card editor data.");
+          }
+        });
+        putConfig(defaults);
+      })();
+    </script>
+  </body>
 </html>

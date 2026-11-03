@@ -1,0 +1,10 @@
+node_modules/
+.git/
+assets/
+source_assets/
+tiles/
+tiles&objects/
+maps/
+data/
+package-lock.json
+scripts/default-config.js

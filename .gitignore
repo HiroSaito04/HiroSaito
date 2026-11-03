@@ -1,2 +1,12 @@
+# OS/editor leftovers
 .DS_Store
 Thumbs.db
+.vscode/
+# Python bytecode and virtual environments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+# Generated previews not used in GitHub README
+assets/contribution-preview.png
+assets/village-map-full.png

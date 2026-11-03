@@ -3,7 +3,7 @@ name: Update real GitHub contribution calendar (Brio)
 on:
   workflow_dispatch:
   schedule:
-    - cron: '17 1 * * *' # Once daily, UTC
+    - cron: "17 1 * * *" # Once daily, UTC
 
 permissions:
   contents: write
@@ -21,7 +21,7 @@ jobs:
           persist-credentials: true
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: "3.12"
       - run: python -m pip install -r requirements.txt
       - name: Fetch public contribution levels and render Brio GIF
         run: python scripts/render_contributions.py --fetch
@@ -29,7 +29,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/contribution-brio.gif assets/contribution-preview.png data/contributions.json
+          git add assets/contribution-brio.gif data/contributions.json
           if ! git diff --cached --quiet; then
             git commit -m "chore: refresh public contribution calendar with Brio"
             git push origin HEAD:main
