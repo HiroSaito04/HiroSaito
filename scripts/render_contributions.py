@@ -1,20 +1,10 @@
-"""GitHub contribution calendar with Brio's four-direction animation.
+
+"""Render a compact, pixel-font GitHub contributions GIF with animated Brio.
 
 Commands:
     python scripts/render_contributions.py
     python scripts/render_contributions.py --fetch
     python scripts/render_contributions.py --preview
-
-Features:
-- Compact calendar with no unnecessary bottom space
-- Contribution legend aligned with the top-right heading
-- No live-data/date label
-- Real GitHub contribution levels
-- Brio moves only up, down, left, and right
-- Brio moves one calendar block at a time
-- Nearest illuminated contribution targeting
-- Visited illuminated contributions turn dark
-- Automatic looping GIF
 """
 
 from __future__ import annotations
@@ -31,17 +21,27 @@ from pathlib import Path
 from PIL import Image, ImageDraw
 from pixel_font import pixel_text
 
+
+# ============================================================
+# CONFIGURATION
+# ============================================================
+
 ROOT = Path(__file__).resolve().parents[1]
+
 DATA = ROOT / "data" / "contributions.json"
 OUT = ROOT / "assets" / "contribution-brio.gif"
 
 USERNAME = "HiroSaito04"
 
-# Canvas and calendar dimensions
-W, H = 1198, 222
-GAP = 17
-CELL = 13
-GX, GY = 126, 82
+WIDTH, HEIGHT = 1198, 222
+
+GRID_X, GRID_Y = 126, 82
+CELL, GAP = 13, 17
+
+BACKGROUND = "#0d1117"
+BORDER = "#30363d"
+TEXT = "#e6edf3"
+MUTED = "#8b949e"
 
 COLORS = [
     "#161b22",
@@ -52,7 +52,13 @@ COLORS = [
 ]
 
 
+# ============================================================
+# FETCH GITHUB CONTRIBUTIONS
+# ============================================================
+
 class ContributionsHTML(HTMLParser):
+    """Read date/level cells from GitHub's contribution calendar."""
+
     def __init__(self):
         super().__init__()
         self.days = []
@@ -63,18 +69,17 @@ class ContributionsHTML(HTMLParser):
 
         attributes = dict(attrs)
 
-        if "data-date" not in attributes:
-            return
+        date = attributes.get("data-date")
+        level = attributes.get("data-level")
 
-        if "data-level" not in attributes:
+        if date is None or level is None:
             return
 
         try:
-            level = int(attributes["data-level"])
             self.days.append(
                 {
-                    "date": attributes["data-date"],
-                    "level": min(4, max(0, level)),
+                    "date": date,
+                    "level": min(4, max(0, int(level))),
                 }
             )
         except ValueError:
@@ -82,29 +87,34 @@ class ContributionsHTML(HTMLParser):
 
 
 def fetch():
-    url = f"https://github.com/users/" f"{USERNAME}/contributions"
+    """Refresh public contributions without overwriting failed fetches."""
 
-    request = urllib.request.Request(
-        url,
-        headers={
-            "User-Agent": "Mozilla/5.0",
-            "Accept": "text/html",
-        },
+    url = (
+        f"https://github.com/users/"
+        f"{USERNAME}/contributions"
     )
 
     errors = []
     days = []
 
     try:
+        request = urllib.request.Request(
+            url,
+            headers={
+                "User-Agent": "Mozilla/5.0",
+                "Accept": "text/html",
+            },
+        )
+
         with urllib.request.urlopen(
             request,
             timeout=28,
         ) as response:
-            html = response.read().decode("utf-8")
-
-        parser = ContributionsHTML()
-        parser.feed(html)
-        days = parser.days
+            parser = ContributionsHTML()
+            parser.feed(
+                response.read().decode("utf-8")
+            )
+            days = parser.days
 
     except Exception as exc:
         errors.append(str(exc))
@@ -112,7 +122,8 @@ def fetch():
     if len(days) < 330:
         try:
             api = (
-                "https://github-contributions-api.jogruber.de/" f"v4/{USERNAME}?y=last"
+                "https://github-contributions-api.jogruber.de/"
+                f"v4/{USERNAME}?y=last"
             )
 
             request = urllib.request.Request(
@@ -131,7 +142,10 @@ def fetch():
             days = [
                 {
                     "date": item["date"],
-                    "level": int(item["level"]),
+                    "level": min(
+                        4,
+                        max(0, int(item["level"])),
+                    ),
                 }
                 for item in result["contributions"]
             ]
@@ -139,22 +153,26 @@ def fetch():
         except Exception as exc:
             errors.append(str(exc))
 
-    # Preserve the existing cache if fetching fails.
-    valid_days = {item["date"]: item for item in days if 0 <= item["level"] <= 4}
+    unique_days = {
+        day["date"]: day
+        for day in days
+        if 0 <= day["level"] <= 4
+    }
 
     today = dt.date.today()
-    earliest = today - dt.timedelta(days=366)
+    start = today - dt.timedelta(days=366)
 
     within = [
-        value
-        for date, value in valid_days.items()
-        if earliest.isoformat() <= date <= today.isoformat()
+        day
+        for date, day in unique_days.items()
+        if start.isoformat() <= date <= today.isoformat()
     ]
 
     if len(within) < 320:
         raise RuntimeError(
-            "Could not fetch the complete contribution "
-            "calendar. Existing data was preserved. " + " ".join(errors)
+            "Could not retrieve enough public contribution data. "
+            "The existing cache was not overwritten. "
+            + " ".join(errors)
         )
 
     DATA.parent.mkdir(
@@ -179,19 +197,27 @@ def fetch():
     )
 
     print(
-        "Fetched real GitHub contributions:",
-        len(within),
+        f"Fetched {len(within)} real GitHub contribution days."
     )
 
+
+# ============================================================
+# LOAD CONTRIBUTION LEVELS
+# ============================================================
 
 def levels_for(mode):
     today = dt.date.today()
 
-    sunday = today - dt.timedelta(days=(today.weekday() + 1) % 7)
+    sunday = today - dt.timedelta(
+        days=(today.weekday() + 1) % 7
+    )
 
-    first = sunday - dt.timedelta(weeks=52)
+    first_day = sunday - dt.timedelta(weeks=52)
 
-    days = [first + dt.timedelta(days=i) for i in range(371)]
+    days = [
+        first_day + dt.timedelta(days=index)
+        for index in range(371)
+    ]
 
     if mode == "sample":
         rng = random.Random(11)
@@ -205,28 +231,334 @@ def levels_for(mode):
             if day <= today
         }
 
-        return (
-            days,
-            levels,
-            "SAMPLE PREVIEW - NOT REAL DATA",
-        )
+        return days, levels
 
     if not DATA.exists():
-        return (
-            days,
-            {},
-            "RUN GITHUB ACTION TO LOAD CONTRIBUTIONS",
+        raise FileNotFoundError(
+            "Missing data/contributions.json. "
+            "Run the renderer with --fetch to retrieve "
+            "real GitHub contributions."
         )
 
-    cached = json.loads(DATA.read_text(encoding="utf-8"))
+    cached = json.loads(
+        DATA.read_text(encoding="utf-8")
+    )
 
     if cached.get("source") != "GitHub public contributions":
-        raise RuntimeError("Unknown contribution data source.")
+        raise RuntimeError(
+            "Unexpected contribution cache source; not using it."
+        )
 
-    levels = {item["date"]: int(item["level"]) for item in cached["days"]}
+    levels = {
+        item["date"]: min(
+            4,
+            max(0, int(item["level"])),
+        )
+        for item in cached["days"]
+    }
 
-    return days, levels, ""
+    return days, levels
 
+
+# ============================================================
+# CALENDAR DESIGN
+# ============================================================
+
+def calendar_background(days, levels, mode):
+    """Create the static calendar using crisp pixel lettering."""
+
+    image = Image.new(
+        "RGBA",
+        (WIDTH, HEIGHT),
+        BACKGROUND,
+    )
+
+    draw = ImageDraw.Draw(image)
+
+    draw.rounded_rectangle(
+        (1, 1, WIDTH - 2, HEIGHT - 2),
+        radius=10,
+        fill=BACKGROUND,
+        outline=BORDER,
+        width=2,
+    )
+
+    # --------------------------------------------------------
+    # TOP-LEFT TITLE
+    # --------------------------------------------------------
+
+    pixel_text(
+        image,
+        "CONTRIBUTION ACTIVITY",
+        26,
+        23,
+        3,
+        TEXT,
+    )
+
+    # --------------------------------------------------------
+    # TOP-RIGHT LEGEND
+    # --------------------------------------------------------
+
+    pixel_text(
+        image,
+        "LESS",
+        WIDTH - 347,
+        28,
+        2,
+        MUTED,
+    )
+
+    for level, color in enumerate(COLORS):
+        x = WIDTH - 273 + level * 23
+
+        draw.rounded_rectangle(
+            (x, 26, x + 14, 40),
+            radius=2,
+            fill=color,
+        )
+
+    pixel_text(
+        image,
+        "MORE",
+        WIDTH - 105,
+        28,
+        2,
+        MUTED,
+    )
+
+    # --------------------------------------------------------
+    # SAMPLE DISCLAIMER
+    # --------------------------------------------------------
+
+    if mode == "sample":
+        pixel_text(
+            image,
+            "SAMPLE - NOT REAL DATA",
+            425,
+            57,
+            1,
+            MUTED,
+        )
+
+    # --------------------------------------------------------
+    # MONTH LABELS
+    # --------------------------------------------------------
+
+    for week in range(1, 53):
+        current = days[week * 7]
+        previous = days[(week - 1) * 7]
+
+        if current.month != previous.month:
+            x = GRID_X + week * GAP
+
+            if x < WIDTH - 65:
+                pixel_text(
+                    image,
+                    current.strftime("%b").upper(),
+                    x,
+                    58,
+                    2,
+                    MUTED,
+                )
+
+    # --------------------------------------------------------
+    # WEEKDAY LABELS
+    # --------------------------------------------------------
+
+    for row, name in (
+        (1, "MON"),
+        (3, "WED"),
+        (5, "FRI"),
+    ):
+        pixel_text(
+            image,
+            name,
+            39,
+            GRID_Y + row * GAP + 2,
+            2,
+            MUTED,
+        )
+
+    # --------------------------------------------------------
+    # CONTRIBUTION CELLS
+    # --------------------------------------------------------
+
+    today = dt.date.today()
+    lit = set()
+
+    for week in range(53):
+        for row in range(7):
+            day = days[week * 7 + row]
+            date = day.isoformat()
+
+            if day > today or date not in levels:
+                continue
+
+            level = levels[date]
+
+            x = GRID_X + week * GAP
+            y = GRID_Y + row * GAP
+
+            draw.rounded_rectangle(
+                (
+                    x,
+                    y,
+                    x + CELL,
+                    y + CELL,
+                ),
+                radius=2,
+                fill=COLORS[level],
+            )
+
+            if level > 0:
+                lit.add((week, row))
+
+    return image, lit
+
+
+# ============================================================
+# BRIO SPRITES
+# ============================================================
+
+def load_sprites():
+    folder = ROOT / "source_assets" / "sprites"
+    sprites = {}
+
+    for number in range(1, 13):
+        path = folder / f"brio{number}.png"
+
+        if not path.exists():
+            raise FileNotFoundError(
+                f"Missing Brio sprite: {path}"
+            )
+
+        with Image.open(path) as sprite:
+            sprites[number] = sprite.convert("RGBA")
+
+    return sprites
+
+
+# ============================================================
+# MOVEMENT HELPERS
+# ============================================================
+
+def manhattan(a, b):
+    return (
+        abs(a[0] - b[0])
+        + abs(a[1] - b[1])
+    )
+
+
+def direction_for(a, b):
+    if b[0] > a[0]:
+        return "right"
+
+    if b[0] < a[0]:
+        return "left"
+
+    if b[1] > a[1]:
+        return "down"
+
+    return "up"
+
+
+def route_cells(start, target):
+    """Move one cell at a time without diagonal movement."""
+
+    col, row = start
+
+    target_col, target_row = target
+
+    path = []
+
+    horizontal_first = (
+        abs(target_col - col)
+        >= abs(target_row - row)
+    )
+
+    if horizontal_first:
+        while col != target_col:
+            col += 1 if target_col > col else -1
+            path.append((col, row))
+
+        while row != target_row:
+            row += 1 if target_row > row else -1
+            path.append((col, row))
+
+    else:
+        while row != target_row:
+            row += 1 if target_row > row else -1
+            path.append((col, row))
+
+        while col != target_col:
+            col += 1 if target_col > col else -1
+            path.append((col, row))
+
+    return path
+
+
+def center(cell):
+    col, row = cell
+
+    return (
+        GRID_X + col * GAP + CELL / 2,
+        GRID_Y + row * GAP + CELL / 2,
+    )
+
+
+# ============================================================
+# CONSISTENT GIF PALETTE
+# ============================================================
+
+def gif_palette():
+    """Preserve exact calendar and text colors across GIF frames."""
+
+    palette = [
+        (13, 17, 23),
+        (48, 54, 61),
+        (230, 237, 243),
+        (139, 148, 158),
+        (22, 27, 34),
+        (14, 68, 41),
+        (0, 109, 50),
+        (38, 166, 65),
+        (57, 211, 83),
+    ]
+
+    for red in range(0, 256, 51):
+        for green in range(0, 256, 51):
+            for blue in range(0, 256, 51):
+                rgb = (red, green, blue)
+
+                if rgb not in palette:
+                    palette.append(rgb)
+
+    palette = palette[:256]
+
+    palette.extend(
+        [(0, 0, 0)] * (256 - len(palette))
+    )
+
+    sample = Image.new(
+        "P",
+        (1, 1),
+    )
+
+    sample.putpalette(
+        [
+            channel
+            for rgb in palette
+            for channel in rgb
+        ]
+    )
+
+    return sample
+
+
+# ============================================================
+# RENDER ANIMATION
+# ============================================================
 
 def draw(
     mode,
@@ -234,341 +566,117 @@ def draw(
     pixels_per_frame=12.0,
     frame_budget=None,
 ):
-    days, levels, label = levels_for(mode)
+    days, levels = levels_for(mode)
 
-    today = dt.date.today()
-
-    # --------------------------------------------------
-    # BASE CANVAS
-    # --------------------------------------------------
-
-    base = Image.new(
-        "RGBA",
-        (W, H),
-        "#0d1117",
+    base, lit = calendar_background(
+        days,
+        levels,
+        mode,
     )
 
-    dr = ImageDraw.Draw(base)
+    sprites = load_sprites()
+    palette = gif_palette()
 
-    dr.rounded_rectangle(
-        (1, 1, W - 2, H - 2),
-        radius=10,
-        fill="#0d1117",
-        outline="#30363d",
-        width=2,
-    )
-
-    # --------------------------------------------------
-    # HEADER
-    # --------------------------------------------------
-
-    pixel_text(
-        base,
-        "CONTRIBUTION ACTIVITY",
-        26,
-        23,
-        3,
-        "#e6edf3",
-    )
-
-    # Only show warnings for sample or missing data.
-    # No LIVE GITHUB DATA / DATE label.
-    if mode == "sample" or not DATA.exists():
-        pixel_text(
-            base,
-            label,
-            480,
-            53,
-            1.5,
-            "#8b949e",
-        )
-
-    # --------------------------------------------------
-    # TOP-RIGHT CONTRIBUTION LEGEND
-    # --------------------------------------------------
-
-    legend_y = 28
-
-    pixel_text(
-        base,
-        "LESS",
-        W - 347,
-        legend_y,
-        2,
-        "#8b949e",
-    )
-
-    for level, color in enumerate(COLORS):
-        x = W - 273 + level * 23
-
-        dr.rounded_rectangle(
-            (
-                x,
-                legend_y - 2,
-                x + 14,
-                legend_y + 12,
-            ),
-            radius=2,
-            fill=color,
-        )
-
-    pixel_text(
-        base,
-        "MORE",
-        W - 105,
-        legend_y,
-        2,
-        "#8b949e",
-    )
-
-    # --------------------------------------------------
-    # MONTH LABELS
-    # --------------------------------------------------
-
-    for week in range(53):
-        day = days[week * 7]
-
-        if week == 0:
-            continue
-
-        previous = days[(week - 1) * 7]
-
-        if day.month != previous.month:
-            x = GX + week * GAP
-
-            if x < 1100:
-                pixel_text(
-                    base,
-                    day.strftime("%b").upper(),
-                    x,
-                    58,
-                    2,
-                    "#8b949e",
-                )
-
-    # --------------------------------------------------
-    # WEEKDAY LABELS
-    # --------------------------------------------------
-
-    for row, weekday in [
-        (1, "MON"),
-        (3, "WED"),
-        (5, "FRI"),
-    ]:
-        pixel_text(
-            base,
-            weekday,
-            39,
-            GY + row * GAP + 2,
-            2,
-            "#8b949e",
-        )
-
-    # --------------------------------------------------
-    # CONTRIBUTION GRID
-    # --------------------------------------------------
-
-    lit = {}
-
-    for week in range(53):
-        for row in range(7):
-            day = days[week * 7 + row]
-
-            if day > today:
-                continue
-
-            date = day.isoformat()
-
-            if mode != "sample" and date not in levels:
-                continue
-
-            level = min(
-                4,
-                max(0, int(levels.get(date, 0))),
-            )
-
-            x = GX + week * GAP
-            y = GY + row * GAP
-
-            dr.rounded_rectangle(
-                (x, y, x + CELL, y + CELL),
-                radius=2,
-                fill=COLORS[level],
-            )
-
-            if level > 0:
-                lit[(week, row)] = (
-                    x + CELL / 2,
-                    y + CELL / 2,
-                )
-
-    # --------------------------------------------------
-    # BRIO SPRITES
-    # --------------------------------------------------
-
-    spritebase = ROOT / "source_assets" / "sprites"
-
-    spritecache = {
-        number: Image.open(spritebase / f"brio{number}.png").convert("RGBA")
-        for number in range(1, 13)
-    }
-
-    frames = []
     remaining = set(lit)
     consumed = set()
 
-    # Brio begins just left of the contribution grid.
-    current_cell = (-1, 3)
+    current = (-1, 3)
+    facing = "right"
 
     tick = 0
+    frames = []
 
-    def cell_center(position):
-        col, row = position
+    poses = {
+        "down": (1, 2, 3),
+        "left": (4, 5, 6),
+        "right": (7, 8, 9),
+        "up": (10, 11, 12),
+    }
 
-        return (
-            GX + col * GAP + CELL / 2,
-            GY + row * GAP + CELL / 2,
-        )
+    # --------------------------------------------------------
+    # DRAW EACH ANIMATION FRAME
+    # --------------------------------------------------------
 
-    def direction_for(start, end):
-        dc = end[0] - start[0]
-        dr = end[1] - start[1]
-
-        if dc > 0:
-            return "right"
-
-        if dc < 0:
-            return "left"
-
-        if dr > 0:
-            return "down"
-
-        return "up"
-
-    def manhattan(start, end):
-        return abs(start[0] - end[0]) + abs(start[1] - end[1])
-
-    # --------------------------------------------------
-    # FRAME RENDERING
-    # --------------------------------------------------
-
-    def paint(point, direction, standing=False):
+    def frame_at(point, direction, standing=False):
         nonlocal tick
 
-        frame = base.copy()
-        draw = ImageDraw.Draw(frame)
+        picture = base.copy()
+        painter = ImageDraw.Draw(picture)
 
-        # Turn visited illuminated cells dark.
         for week, row in consumed:
-            x = GX + week * GAP
-            y = GY + row * GAP
+            x = GRID_X + week * GAP
+            y = GRID_Y + row * GAP
 
-            draw.rounded_rectangle(
-                (x, y, x + CELL, y + CELL),
+            painter.rounded_rectangle(
+                (
+                    x,
+                    y,
+                    x + CELL,
+                    y + CELL,
+                ),
                 radius=2,
                 fill=COLORS[0],
             )
 
-        animations = {
-            "down": (1, 2, 3),
-            "left": (4, 5, 6),
-            "right": (7, 8, 9),
-            "up": (10, 11, 12),
-        }
+        animation = poses[direction]
 
-        sprites = animations[direction]
+        number = (
+            animation[0]
+            if standing
+            else animation[1 + tick % 2]
+        )
 
-        if standing:
-            index = sprites[0]
-        else:
-            index = sprites[1 + tick % 2]
+        sprite = sprites[number]
 
-        sprite = spritecache[index]
+        px = round(
+            point[0] - sprite.width / 2
+        )
 
-        px = round(point[0] - sprite.width / 2)
+        py = round(
+            point[1]
+            - sprite.height
+            + CELL / 2
+            + 2
+        )
 
-        py = round(point[1] - sprite.height + CELL / 2 + 2)
-
-        frame.alpha_composite(
+        picture.alpha_composite(
             sprite,
             (px, py),
         )
 
-        frames.append(
-            frame.convert(
-                "P",
-                palette=Image.Palette.ADAPTIVE,
-                colors=64,
-            )
+        # The same palette is used for every frame.
+        indexed = picture.convert("RGB").quantize(
+            palette=palette,
+            dither=Image.Dither.NONE,
         )
 
+        frames.append(indexed)
         tick += 1
 
-    # --------------------------------------------------
-    # ORTHOGONAL GRID MOVEMENT
-    # --------------------------------------------------
-
-    def route_cells(start, target):
-        """Move exactly one block at a time.
-
-        Only four directions are allowed:
-        up, down, left, and right.
-        """
-
-        path = []
-
-        col, row = start
-        target_col, target_row = target
-
-        horizontal = abs(target_col - col)
-        vertical = abs(target_row - row)
-
-        # Move along the longer axis first.
-        if horizontal >= vertical:
-
-            while col != target_col:
-                col += 1 if target_col > col else -1
-                path.append((col, row))
-
-            while row != target_row:
-                row += 1 if target_row > row else -1
-                path.append((col, row))
-
-        else:
-
-            while row != target_row:
-                row += 1 if target_row > row else -1
-                path.append((col, row))
-
-            while col != target_col:
-                col += 1 if target_col > col else -1
-                path.append((col, row))
-
-        return path
-
-    # --------------------------------------------------
+    # --------------------------------------------------------
     # OPTIONAL FRAME BUDGET
-    # --------------------------------------------------
+    # --------------------------------------------------------
 
     if remaining and frame_budget:
-        mock = current_cell
+        position = current
         targets = set(remaining)
         total_distance = 0
 
         while targets:
-            target = min(
+            nearest = min(
                 targets,
-                key=lambda position: (
-                    manhattan(mock, position),
-                    position[0],
-                    position[1],
+                key=lambda cell: (
+                    manhattan(position, cell),
+                    cell,
                 ),
             )
 
-            total_distance += manhattan(mock, target) * GAP
+            total_distance += (
+                manhattan(position, nearest) * GAP
+            )
 
-            mock = target
-            targets.remove(target)
+            position = nearest
+            targets.remove(nearest)
 
         pixels_per_frame = max(
             pixels_per_frame,
@@ -579,89 +687,85 @@ def draw(
             ),
         )
 
-    # --------------------------------------------------
-    # ANIMATE BRIO
-    # --------------------------------------------------
+    # --------------------------------------------------------
+    # INITIAL FRAME
+    # --------------------------------------------------------
 
-    current_point = cell_center(current_cell)
-    facing = "right"
-
-    paint(
-        current_point,
+    frame_at(
+        center(current),
         facing,
         standing=True,
     )
 
-    while remaining:
+    # --------------------------------------------------------
+    # COLLECT NEAREST ILLUMINATED CELLS
+    # --------------------------------------------------------
 
-        # Find nearest illuminated contribution.
+    while remaining:
         target = min(
             remaining,
-            key=lambda position: (
-                manhattan(current_cell, position),
-                position[0],
-                position[1],
+            key=lambda cell: (
+                manhattan(current, cell),
+                cell,
             ),
         )
 
-        path = route_cells(
-            current_cell,
-            target,
-        )
-
-        for next_cell in path:
-
-            start = cell_center(current_cell)
-            destination = cell_center(next_cell)
+        for next_cell in route_cells(current, target):
+            start = center(current)
+            end = center(next_cell)
 
             facing = direction_for(
-                current_cell,
+                current,
                 next_cell,
             )
 
-            distance = math.dist(
-                start,
-                destination,
-            )
-
-            count = max(
+            steps = max(
                 1,
-                math.ceil(distance / max(1.0, pixels_per_frame)),
+                math.ceil(
+                    math.dist(start, end)
+                    / pixels_per_frame
+                ),
             )
 
-            for step in range(1, count + 1):
-
-                progress = step / count
+            for step in range(1, steps + 1):
+                blend = step / steps
 
                 point = (
-                    start[0] + (destination[0] - start[0]) * progress,
-                    start[1] + (destination[1] - start[1]) * progress,
+                    start[0]
+                    + (end[0] - start[0]) * blend,
+                    start[1]
+                    + (end[1] - start[1]) * blend,
                 )
 
-                # Collect the light on arrival.
-                if step == count and next_cell in remaining:
+                if (
+                    step == steps
+                    and next_cell in remaining
+                ):
                     remaining.remove(next_cell)
                     consumed.add(next_cell)
 
-                paint(
+                frame_at(
                     point,
                     facing,
-                    standing=(step == count),
+                    standing=(step == steps),
                 )
 
-            current_cell = next_cell
+            current = next_cell
 
-    # Brief pause before looping.
+    # --------------------------------------------------------
+    # LOOP PAUSE
+    # --------------------------------------------------------
+
     for _ in range(6):
-        paint(
-            cell_center(current_cell),
+        frame_at(
+            center(current),
             facing,
             standing=True,
         )
 
-    # --------------------------------------------------
-    # SAVE ANIMATION
-    # --------------------------------------------------
+    # --------------------------------------------------------
+    # EXPORT GIF
+    # --------------------------------------------------------
 
     OUT.parent.mkdir(
         parents=True,
@@ -670,11 +774,12 @@ def draw(
 
     frames[0].save(
         OUT,
+        format="GIF",
         save_all=True,
         append_images=frames[1:],
         duration=frame_ms,
         loop=0,
-        optimize=True,
+        optimize=False,
         disposal=2,
     )
 
@@ -682,68 +787,80 @@ def draw(
         f"Brio: {len(lit)} contributions collected | "
         f"{len(frames)} frames | "
         f"{len(frames) * frame_ms / 1000:.1f}s | "
-        f"{OUT.stat().st_size / 1e6:.2f} MB"
+        f"{OUT.stat().st_size / 1_000_000:.2f} MB"
     )
 
 
+# ============================================================
+# COMMAND LINE
+# ============================================================
+
 def main():
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(
+        description=__doc__
+    )
 
     parser.add_argument(
         "--fetch",
         action="store_true",
-        help="Fetch real GitHub contribution data",
     )
 
     parser.add_argument(
         "--preview",
         action="store_true",
-        help="Generate a sample contribution calendar",
     )
 
     parser.add_argument(
         "--frame-ms",
         type=int,
         default=200,
-        help="Milliseconds per frame",
     )
 
     parser.add_argument(
         "--pixels-per-frame",
         type=float,
-        default=12,
-        help="Brio movement speed",
+        default=12.0,
     )
 
     parser.add_argument(
         "--frames",
         type=int,
         default=None,
-        help="Optional approximate frame budget",
     )
 
     args = parser.parse_args()
 
     if args.fetch and args.preview:
-        parser.error("--fetch and --preview cannot be combined")
+        parser.error(
+            "--fetch and --preview cannot be combined"
+        )
 
     if not 60 <= args.frame_ms <= 1000:
-        parser.error("--frame-ms must be between 60 and 1000")
+        parser.error(
+            "--frame-ms must be between 60 and 1000"
+        )
 
     if not 1 <= args.pixels_per_frame <= 50:
-        parser.error("--pixels-per-frame must be between 1 and 50")
+        parser.error(
+            "--pixels-per-frame must be between 1 and 50"
+        )
 
-    if args.frames is not None and not 25 <= args.frames <= 800:
-        parser.error("--frames must be between 25 and 800")
+    if (
+        args.frames is not None
+        and not 25 <= args.frames <= 800
+    ):
+        parser.error(
+            "--frames must be between 25 and 800"
+        )
 
     if args.fetch:
         fetch()
 
     draw(
-        "sample" if args.preview else "live",
-        args.frame_ms,
-        args.pixels_per_frame,
-        args.frames,
+        mode="sample" if args.preview else "live",
+        frame_ms=args.frame_ms,
+        pixels_per_frame=args.pixels_per_frame,
+        frame_budget=args.frames,
     )
 
 

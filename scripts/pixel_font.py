@@ -1,35 +1,77 @@
-"""Shared 5x7 pixel font glyphs from the code-built profile card. No font installation required."""
+
+"""5x7 pixel lettering, compatible with formatted card-renderer.js."""
+
+from __future__ import annotations
 
 import re
 from pathlib import Path
 
 from PIL import ImageDraw
 
-SOURCE = Path(__file__).resolve().parent / "card-renderer.js"
-raw = SOURCE.read_text(encoding="utf-8")
-FONT = {}
-for key, block in re.findall(r"'([^']+)':\[([^\]]+)\]", raw):
-    pattern = re.findall(r"'([01]{5})'", block)
-    if len(pattern) == 7:
-        FONT[key] = pattern
-FONT.setdefault(" ", ["00000"] * 7)
+SOURCE = Path(__file__).resolve().with_name("card-renderer.js")
+
+# Support single/double quotes, optional whitespace,
+# unquoted JavaScript keys, and multiline arrays.
+GLYPH_PATTERN = re.compile(
+    r"(?P<key>'[^']+'|\"[^\"]+\"|[A-Za-z_$][\w$]*)\s*:\s*"
+    r"\[(?P<rows>(?:\s*['\"][01]{5}['\"]\s*,?){7})\s*\]",
+    re.MULTILINE,
+)
+
+ROW_PATTERN = re.compile(r"['\"]([01]{5})['\"]")
 
 
-def pixel_text(img, text, x, y, scale=2, color="#d0e9d0"):
-    d = ImageDraw.Draw(img)
+def load_glyphs():
+    text = SOURCE.read_text(encoding="utf-8")
+    glyphs = {}
+
+    for match in GLYPH_PATTERN.finditer(text):
+        key = match.group("key").strip("'\"")
+        rows = ROW_PATTERN.findall(match.group("rows"))
+
+        if len(rows) == 7:
+            glyphs[key.upper()] = rows
+
+    if len(glyphs) < 26 or "?" not in glyphs:
+        raise RuntimeError(
+            "Could not load pixel glyphs from "
+            "scripts/card-renderer.js. "
+            "Check that the FONT object still "
+            "contains 5x7 glyph rows."
+        )
+
+    glyphs.setdefault(" ", ["00000"] * 7)
+    return glyphs
+
+
+FONT = load_glyphs()
+
+
+def pixel_text(image, text, x, y, scale=2, color="#d0e9d0"):
+    """Render crisp, unantialiased pixel glyphs."""
+
+    draw = ImageDraw.Draw(image)
+
     scale = max(1, round(scale))
-    for c in str(text).upper():
-        grid = FONT.get(c, FONT.get("?", FONT[" "]))
-        for yy, row in enumerate(grid):
-            for xx, v in enumerate(row):
-                if v == "1":
-                    d.rectangle(
+    x, y = round(x), round(y)
+
+    for character in str(text).upper():
+        glyph = FONT.get(character, FONT["?"])
+
+        for row_index, bits in enumerate(glyph):
+            for col_index, bit in enumerate(bits):
+                if bit == "1":
+                    left = x + col_index * scale
+                    top = y + row_index * scale
+
+                    draw.rectangle(
                         (
-                            x + xx * scale,
-                            y + yy * scale,
-                            x + (xx + 1) * scale - 1,
-                            y + (yy + 1) * scale - 1,
+                            left,
+                            top,
+                            left + scale - 1,
+                            top + scale - 1,
                         ),
                         fill=color,
                     )
+
         x += 6 * scale
